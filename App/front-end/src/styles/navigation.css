@@ -1,0 +1,91 @@
+header,
+footer {
+    width: 80%;
+    overflow: hidden;
+    color: white;
+}
+
+.home {
+    font-size: auto;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.header-title {
+    margin-left: 25px; 
+    padding: 25px 0px;
+    text-transform: uppercase;
+    font-size: 30px;
+}
+
+.header-title .home {
+    text-decoration: none;
+    color: inherit; 
+}
+
+header {
+    position: relative;
+    width: 100%;
+    border-radius: 5px;
+    padding-top: 0px;
+}
+
+header h1 {
+    display: inline-block;
+    color: white;
+    padding-top: 20px;
+}
+
+header nav {
+    font-size: 25px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    position: absolute;
+    right: 7px;
+    bottom: 45px;
+}
+
+header nav>* {
+    float: left;
+}
+
+footer {
+    margin-top: 25px;
+    color: white;
+    text-align: center;
+    padding: 5px 0px ;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-content p {
+    margin: 10px 0;
+    color: #cbc9c9; 
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+nav a {
+    margin: 0 0.5em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+nav a:hover {
+    cursor: pointer;
+    color: rgb(204, 144, 131);
+}
+
+.home:hover {
+    color: rgb(204, 144, 131);
+}
+
+#user,
+#guest {
+    margin: 0;
+    padding: 0;
+}

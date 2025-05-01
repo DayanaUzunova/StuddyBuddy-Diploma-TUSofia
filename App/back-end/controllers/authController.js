@@ -35,22 +35,30 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Проверка за потребителя в базата
-    const user = await User.findOne({ email });
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Invalid credentials!' });
+    };
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      res.json({
-        _id: user.id,
-        username: user.username,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401).json({ message: 'Грешен имейл или парола' });
-    }
+    const user = await User.findOne({ email }); // 
+
+    if (!user || !await bcrypt.compare(password, user.password)) {
+      return res.status(400).json({ message: 'Wrong credentials or invalid user!' });
+    };
+
+    const token = generateToken(user._id);
+
+    console.log(token);
+
+    res.status(200).json({
+      _id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      token: token
+    });
+
   } catch (error) {
     res.status(500).json({ message: 'Грешка при влизане' });
   }

@@ -1,78 +1,87 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useForm } from "../../hooks/useForm";
-import { useAuth } from "../../context/AuthContext.jsx"; 
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useForm } from '../../hooks/useForm';
+import { useAuth } from '../../context/AuthContext.jsx';
 import '../../styles/login.css';
+import axiosInstance from '../../api/api.jsx';
 
 const initialValues = { email: '', password: '' };
 
 export default function Login() {
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-    const { login } = useAuth();  
+  const [error, setError] = useState('');
 
-    const loginHandler = async ({ email, password }) => {
-        if (!email || !password) {
-            setError('Both email and password are required!');
-            return;
-        }
+  const { setToken } = useAuth();
+  const navigate = useNavigate();
 
-        try {
-            const response = await fetch("http://localhost:5000/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+  const loginHandler = async ({ email, password }) => {
+    if (!email || !password) {
+      setError('Both email and password are required!');
+      return;
+    }
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
+    try {
+      const response = await axiosInstance.post(
+        'http://localhost:3001/api/users/login',
+        { email, password }
+      );
 
-            login(data); 
-            navigate("/"); 
-        } catch (err) {
-            setError(err.message || "Login failed!");
-        }
-    };
+      if (!response?.data) {
+        throw new Error('Invalid response from login!');
+      }
 
-    const { values, changeHandler, submitHandler } = useForm(initialValues, loginHandler);
+      const jwt = response?.data?.token;
+      setToken(jwt);
 
-    return (
-        <section id="login-page" className="auth">
-            <form id="login" onSubmit={submitHandler}>
-                <div className="container">
-                    <h1>Login</h1>
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed!');
+    }
+  };
 
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={values.email}
-                        onChange={changeHandler}
-                        placeholder="Enter your email here.."
-                        required
-                    />
+  const { values, changeHandler, submitHandler } = useForm(
+    initialValues,
+    loginHandler
+  );
 
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={values.password}
-                        onChange={changeHandler}
-                        placeholder="Enter your password here.."
-                        required
-                    />
+  return (
+    <section id="login-page" className="auth">
+      <form id="login" onSubmit={submitHandler}>
+        <div className="container">
+          <h1>Login</h1>
 
-                    {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={values.email}
+            onChange={changeHandler}
+            placeholder="Enter your email here.."
+            required
+          />
 
-                    <input type="submit" className="btn submit" value="Login" />
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={values.password}
+            onChange={changeHandler}
+            placeholder="Enter your password here.."
+            required
+          />
 
-                    <p className="field">
-                        <span>Don’t have an account? <a href="/register">Register here</a></span>
-                    </p>
-                </div>
-            </form>
-        </section>
-    );
+          {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+
+          <input type="submit" className="btn submit" value="Login" />
+
+          <p className="field">
+            <span>
+              Don’t have an account? <a href="/register">Register here</a>
+            </span>
+          </p>
+        </div>
+      </form>
+    </section>
+  );
 }

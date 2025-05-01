@@ -18,26 +18,36 @@ const registerUser = async (req, res) => {
 
 // Login User
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Моля, попълнете всички полета' });
-  }
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Моля, попълнете всички полета' });
+    }
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
+    if (!user || !await bcrypt.compare(password, user.password)) {
+      return res.status(400).json({ message: 'Invalid user or password!' })
+    };
+
+    const jwt = generateToken(user?.id)
+
+    res.status(200).json({
       _id: user.id,
       username: user.username,
       email: user.email,
       password: user.password,
-      role: user.role
+      role: user.role,
+      token: jwt
     });
-  } else {
-    res.status(401).json({ message: 'Невалиден имейл или парола' });
+  } catch (err) {
+    console.log(err);
   }
 };
 
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+};
 
 module.exports = { registerUser, loginUser };

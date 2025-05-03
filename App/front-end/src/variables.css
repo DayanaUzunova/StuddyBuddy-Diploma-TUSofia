@@ -1,0 +1,51 @@
+:root {
+  --clr-scroll-blue: #4c566a;
+  --clr-dark-blue: #3d4550;
+  --clr-darker-blue: #222933;
+  --clr-natural-white: #ffffff;
+  --clr-special-cyan: #5cf6fc;
+  --clr-rgb-grey: rgb(93, 93, 93);
+  --clr-light-grey: rgb(39, 38, 38);
+  --clr-rgb-dark-grey: rgb(32, 32, 35);
+  --clr-rgb-dark-blue: #1f2630;
+  --clr-background-transparent: rgba(34, 41, 51, 0.6);
+  --clr-hover-right-message: #465261;
+  --clr-gradient-yellow: linear-gradient(
+    270deg,
+    rgba(255, 255, 0, 1) 0%,
+    rgba(255, 214, 0, 1) 100%,
+    rgba(246, 187, 92, 1) 100%
+  );
+  --clr-gradient-cyan: linear-gradient(
+    90deg,
+    rgba(42, 115, 168, 1) 0%,
+    rgba(0, 212, 255, 1) 100%,
+    rgba(92, 246, 240, 1) 100%
+  );
+  --clr-gradient-purple: linear-gradient(
+    90deg,
+    rgba(61, 51, 121, 1) 0%,
+    rgba(106, 90, 205, 1) 100%,
+    rgba(106, 90, 205, 1) 100%
+  );
+  --clr-light-blue: #1156bf;
+  --fnt-size-xsmall: 0.6rem;
+  --fnt-size-small: 0.78rem;
+  --fnt-size-medium: 0.95rem;
+  --fnt-size-large: 1.35rem;
+  --fnt-weight-medium: 600;
+  --size-container: 36em;
+  --size-searchbar: 20em;
+  --size-button: 9em;
+  --size-default-radius: 30px;
+  --smaller-radius: 15px;
+  --scale-value: 0.95;
+  --scale-value-lower: 0.9;
+  scrollbar-color: var(--clr-scroll-blue) transparent;
+  scrollbar-width: thin;
+  --def-box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  --clr-light-cyan: rgba(35, 121, 147, 0.6);
+  --def-error-color: red;
+  --def-success-color: white;
+  --def-warning-color: #fa5e55;
+}

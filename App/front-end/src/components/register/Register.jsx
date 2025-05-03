@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
-import '../../styles/register.css';
 import axiosInstance from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
 

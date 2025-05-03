@@ -6,6 +6,7 @@ import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
 import PrivateRoute from './components/util/privateRoute';
 import { useAuth } from './context/AuthContext';
+import './App.css';
 
 const App = () => {
   const { user } = useAuth();

@@ -1,0 +1,32 @@
+header {
+  display: flex;
+  justify-content: space-between; /* Push left and right sides */
+  align-items: center;
+  padding: 13px 40px; /* Extra side padding */
+  max-width: 1200px;
+  margin: 0 auto; /* Center header block on screen */
+}
+
+nav {
+  display: flex;
+}
+
+.home {
+  user-select: none;
+  cursor: pointer;
+}
+
+.guest,
+.user {
+  display: flex;
+  gap: 20px;
+}
+
+.nav_button {
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav_button:active {
+  transform: scale(var(--scale-value));
+}

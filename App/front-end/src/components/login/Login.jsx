@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { useAuth } from '../../context/AuthContext.jsx';
-import '../../styles/login.css';
 import axiosInstance from '../../api/api.jsx';
 
 const initialValues = { email: '', password: '' };

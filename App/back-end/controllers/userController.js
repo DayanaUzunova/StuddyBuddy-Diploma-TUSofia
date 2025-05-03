@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { getUserOnLogin } = require('../services/userService');
 
 // Register User
 const registerUser = async (req, res) => {
@@ -49,7 +50,7 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Моля, попълнете всички полета' });
     };
 
-    const user = await User.findOne({ email });
+    const user = await getUserOnLogin(email);
 
     if (!user || !await bcrypt.compare(password, user.password)) {
       return res.status(400).json({ message: 'Invalid user or password!' })
@@ -67,11 +68,22 @@ const loginUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-  }
+  };
 };
+
+const getLanguage = async (req, res) => {
+  try {
+
+
+
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: err.message })
+  }
+}
 
 const generateToken = (id, username, email, role) => {
   return jwt.sign({ id, username, email, role }, process.env.JWT_SECRET, { expiresIn: '10s' });
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, getLanguage };

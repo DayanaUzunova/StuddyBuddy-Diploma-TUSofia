@@ -20,10 +20,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axiosInstance.post(
-        'http://localhost:3001/api/users/login',
-        { email, password }
-      );
+      const response = await axiosInstance.post('http://localhost:3001/api/users/login', { email, password });
 
       if (!response?.data) {
         throw new Error('Invalid response from login!');

@@ -2,42 +2,39 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import '../../styles/register.css';
+import axiosInstance from '../../api/api';
+import { useAuth } from '../../context/AuthContext';
 
 const initialValues = { username: '', email: '', password: '', confirmPassword: '', role: '' };
 
 export default function Register() {
     const [error, setError] = useState('');
+
     const navigate = useNavigate();
+    const { setToken } = useAuth();
 
     const registerHandler = async ({ username, email, password, confirmPassword, role }) => {
-        if (!username || !email || !password || !confirmPassword || !role) {
-            setError('All fields are required!');
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            setError('Passwords do not match!');
-            return;
-        }
-
-        // Validate email format
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            setError('Please enter a valid email address!');
-            return;
-        }
-
         try {
-            const response = await fetch("http://localhost:3001/api/users/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, password, role }),
-            });
+            if (!username || !email || !password || !confirmPassword || !role) {
+                setError('All fields are required!');
+                return;
+            }
 
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message);
+            if (password !== confirmPassword) {
+                setError('Passwords do not match!');
+                return;
+            };
 
-            navigate("/"); 
+            const response = await axiosInstance.post("http://localhost:3001/api/users/register", { username, email, password, role });
+
+            if (!response?.data) {
+                throw new Error('Invalid response data from server!');
+            };
+
+            const jwt = response?.data?.token;
+            setToken(jwt);
+
+            navigate("/");
         } catch (err) {
             setError(err.message || "Registration failed!");
         }
@@ -97,11 +94,11 @@ export default function Register() {
 
                     {/* Dropdown за избор на роля */}
                     <label htmlFor="role">Role:</label>
-                    <select 
-                        id="role" 
-                        name="role" 
-                        value={values.role} 
-                        onChange={changeHandler} 
+                    <select
+                        id="role"
+                        name="role"
+                        value={values.role}
+                        onChange={changeHandler}
                         required
                     >
                         <option value="">Select Role</option>

@@ -9,6 +9,7 @@ const registerUser = async (req, res) => {
 
     // Проверка дали потребителят съществува
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       return res.status(400).json({ message: 'Имейлът вече се използва' });
     }

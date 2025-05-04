@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import axiosInstance from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
+import '../../style/register.css'
 
 const initialValues = { username: '', email: '', password: '', confirmPassword: '', role: '' };
 
@@ -42,57 +43,55 @@ export default function Register() {
     const { values, changeHandler, submitHandler } = useForm(initialValues, registerHandler);
 
     return (
-        <section id="register-page" className="auth">
-            <form id="register" onSubmit={submitHandler}>
-                <div className="container">
-                    <h1>Register</h1>
-
-                    <label htmlFor="username">Username:</label>
+        <section className="register-page">
+            <div className="register-container">
+                <h1 className="register-title">Create an Account</h1>
+                <form className="register-form" onSubmit={submitHandler}>
+                    <label htmlFor="username">Username</label>
                     <input
                         type="text"
                         id="username"
                         name="username"
                         value={values.username}
                         onChange={changeHandler}
-                        placeholder="Enter your username.."
+                        placeholder="Enter your username"
                         required
                     />
 
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email">Email</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
                         value={values.email}
                         onChange={changeHandler}
-                        placeholder="Enter your email.."
+                        placeholder="Enter your email"
                         required
                     />
 
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         id="password"
                         name="password"
                         value={values.password}
                         onChange={changeHandler}
-                        placeholder="Enter your password.."
+                        placeholder="Enter your password"
                         required
                     />
 
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
                     <input
                         type="password"
                         id="confirmPassword"
                         name="confirmPassword"
                         value={values.confirmPassword}
                         onChange={changeHandler}
-                        placeholder="Confirm your password.."
+                        placeholder="Confirm your password"
                         required
                     />
 
-                    {/* Dropdown за избор на роля */}
-                    <label htmlFor="role">Role:</label>
+                    <label htmlFor="role">Role</label>
                     <select
                         id="role"
                         name="role"
@@ -106,15 +105,15 @@ export default function Register() {
                         <option value="admin">Admin</option>
                     </select>
 
-                    {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+                    {error && <p className="register-error">{error}</p>}
 
-                    <input type="submit" className="btn submit" value="Register" />
+                    <button type="submit" className="primary-btn">Register</button>
 
-                    <p className="field">
-                        <span>Already have an account? <a href="/login">Login here</a></span>
+                    <p className="register-login-link">
+                        Already have an account? <a href="/login">Login here</a>
                     </p>
-                </div>
-            </form>
+                </form>
+            </div>
         </section>
     );
 }

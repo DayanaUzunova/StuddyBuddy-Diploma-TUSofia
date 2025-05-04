@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { useAuth } from '../../context/AuthContext.jsx';
 import axiosInstance from '../../api/api.jsx';
+import '../../style/login.css';
 
 const initialValues = { email: '', password: '' };
 
@@ -40,41 +41,40 @@ export default function Login() {
   );
 
   return (
-    <section id="login-page" className="auth">
-      <form id="login" onSubmit={submitHandler}>
-        <div className="container">
-          <h1>Login</h1>
+    <section id="login-page" className="auth-page">
+      <form id="login" className="auth-form" onSubmit={submitHandler}>
+        <div className="auth-container">
+          <h1 className="auth-title">Welcome Back</h1>
+          <p className="auth-subtitle">Log in to continue your learning journey</p>
 
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
             name="email"
             value={values.email}
             onChange={changeHandler}
-            placeholder="Enter your email here.."
+            placeholder="Enter your email"
             required
           />
 
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
             name="password"
             value={values.password}
             onChange={changeHandler}
-            placeholder="Enter your password here.."
+            placeholder="Enter your password"
             required
           />
 
-          {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+          {error && <p className="auth-error">{error}</p>}
 
           <input type="submit" className="btn submit" value="Login" />
 
-          <p className="field">
-            <span>
-              Don’t have an account? <a href="/register">Register here</a>
-            </span>
+          <p className="auth-switch">
+            Don’t have an account? <a href="/register">Register here</a>
           </p>
         </div>
       </form>

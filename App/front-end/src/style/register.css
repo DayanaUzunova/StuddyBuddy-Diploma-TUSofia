@@ -1,0 +1,135 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align towards top on larger screens */
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f7f9fc;
+}
+
+.register-container {
+  background-color: white;
+  padding: 40px;
+  max-width: 450px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  margin-top: 80px; /* Push form down a bit on larger screens */
+}
+
+.register-title {
+  font-size: 2rem;
+  color: var(--main-blue-clr);
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.register-form label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.register-form input,
+.register-form select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+  outline: none;
+  border-color: var(--main-blue-clr);
+}
+
+.primary-btn {
+  padding: 12px;
+  background-color: var(--main-blue-clr);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.primary-btn:hover {
+  background-color: #0288d1;
+}
+
+.register-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  text-align: center;
+}
+
+.register-login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.register-login-link a {
+  color: var(--main-blue-clr);
+  text-decoration: none;
+}
+
+.register-login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+/* Responsive adjustments for mobile */
+@media (max-width: 500px) {
+  .register-page {
+    align-items: center;
+  }
+
+  .register-container {
+    padding: 25px 16px; /* Reduced container padding */
+    margin-top: 0;
+  }
+
+  .register-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px; /* Less space below title */
+  }
+
+  .register-form {
+    gap: 12px; /* Tighter vertical spacing between form elements */
+  }
+
+  .register-form label {
+    font-size: 0.95rem;
+    margin-bottom: 4px; /* Less space between label and input */
+  }
+
+  .register-form input,
+  .register-form select {
+    padding: 10px 12px; /* Slightly smaller input padding */
+    font-size: 0.95rem;
+  }
+
+  .primary-btn {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .register-login-link {
+    font-size: 0.85rem;
+    margin-top: 15px;
+  }
+}

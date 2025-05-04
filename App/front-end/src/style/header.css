@@ -1,32 +1,76 @@
 header {
+  position: fixed; /* Make it stick to the top */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it stays above other content */
+  background-color: white; /* Prevent transparency */
   display: flex;
-  justify-content: space-between; /* Push left and right sides */
+  justify-content: center;
   align-items: center;
-  padding: 13px 40px; /* Extra side padding */
-  max-width: 1200px;
-  margin: 0 auto; /* Center header block on screen */
+  padding: 13px 40px;
+  border-bottom: 1px solid rgb(221, 208, 208);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 nav {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .home {
   user-select: none;
   cursor: pointer;
+  color: var(--main-blue-clr);
+  font-weight: lighter;
+  font-size: 1.5rem;
+}
+
+.nav_container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
 }
 
 .guest,
 .user {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .nav_button {
   cursor: pointer;
   user-select: none;
+  color: var(--main-blue-clr);
+  font-size: 1rem;
 }
 
 .nav_button:active {
   transform: scale(var(--scale-value));
+}
+
+.lang_btn {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 10px;
+}
+
+.lang_btn:active {
+  transform: scale(var(--scale-value));
+}
+
+@media (max-width: 768px) {
+  header {
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  nav {
+    gap: 0;
+  }
 }

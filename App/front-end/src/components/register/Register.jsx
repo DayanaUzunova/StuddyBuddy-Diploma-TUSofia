@@ -102,7 +102,6 @@ export default function Register() {
                         <option value="">Select Role</option>
                         <option value="student">Student</option>
                         <option value="teacher">Teacher</option>
-                        <option value="admin">Admin</option>
                     </select>
 
                     {error && <p className="register-error">{error}</p>}

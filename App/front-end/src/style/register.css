@@ -1,9 +1,8 @@
 .register-page {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align towards top on larger screens */
+  align-items: flex-start;
   min-height: 100vh;
-  padding: 40px 20px;
   background-color: #f7f9fc;
 }
 
@@ -15,7 +14,7 @@
   border-radius: 10px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
   text-align: center;
-  margin-top: 80px; /* Push form down a bit on larger screens */
+  margin-top: 80px;
 }
 
 .register-title {
@@ -28,7 +27,7 @@
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   text-align: left;
 }
 
@@ -45,6 +44,7 @@
   font-size: 1rem;
   background-color: #f9f9f9;
   transition: border-color 0.2s;
+  margin-bottom: 10px;
 }
 
 .register-form input:focus,
@@ -91,35 +91,34 @@
   text-decoration: underline;
 }
 
-/* Responsive */
-/* Responsive adjustments for mobile */
 @media (max-width: 500px) {
   .register-page {
     align-items: center;
+    padding-inline: 20px;
   }
 
   .register-container {
-    padding: 25px 16px; /* Reduced container padding */
+    padding: 25px 16px;
     margin-top: 0;
   }
 
   .register-title {
     font-size: 1.6rem;
-    margin-bottom: 20px; /* Less space below title */
+    margin-bottom: 20px;
   }
 
   .register-form {
-    gap: 12px; /* Tighter vertical spacing between form elements */
+    gap: 12px;
   }
 
   .register-form label {
     font-size: 0.95rem;
-    margin-bottom: 4px; /* Less space between label and input */
+    margin-bottom: 4px;
   }
 
   .register-form input,
   .register-form select {
-    padding: 10px 12px; /* Slightly smaller input padding */
+    padding: 10px 12px;
     font-size: 0.95rem;
   }
 
@@ -131,5 +130,10 @@
   .register-login-link {
     font-size: 0.85rem;
     margin-top: 15px;
+  }
+
+  .register-form input,
+  .register-form select {
+    margin-bottom: 0;
   }
 }

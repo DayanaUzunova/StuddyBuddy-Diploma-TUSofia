@@ -86,10 +86,16 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   font-size: 1.1rem;
   transition: transform 0.2s ease;
+  cursor: pointer;
+  user-select: none;
 }
 
 .feature-card:hover {
   transform: translateY(-4px);
+}
+
+.feature-card:active { 
+    transform: scale(var(--scale-value));
 }
 
 /* How It Works */

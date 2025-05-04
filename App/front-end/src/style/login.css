@@ -1,125 +1,124 @@
 .auth-page {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 0 20px;
-    background-color: #f7f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 0 20px;
+  background-color: #f7f9fc;
+}
+
+.auth-form {
+  background-color: #ffffff;
+  padding: 50px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+  margin-top: 100px;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.auth-title {
+  font-size: 2rem;
+  color: var(--main-blue-clr);
+  margin-bottom: 10px;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.auth-form label {
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+
+.auth-form input[type='email'],
+.auth-form input[type='password'],
+.auth-form select {
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
+  background-color: #f9f9f9;
+}
+
+.auth-form input:focus {
+  border-color: var(--main-blue-clr);
+  outline: none;
+}
+
+.auth-error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.btn.submit {
+  background-color: var(--main-blue-clr);
+  color: white;
+  font-weight: bold;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn.submit:hover {
+  background-color: #0288d1;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.auth-switch a {
+  color: var(--main-blue-clr);
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    align-items: center;
   }
-  
+
   .auth-form {
-    background-color: #ffffff;
-    padding: 50px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    max-width: 450px;
-    box-sizing: border-box;
-    margin-top: 100px;
+    padding: 30px 20px;
+    max-width: 100%;
+    margin-top: 0;
   }
-  
-  .auth-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
+
   .auth-title {
-    font-size: 2.5rem;
-    color: #03a9f4;
-    margin-bottom: 10px;
+    font-size: 2rem;
   }
-  
-  .auth-subtitle {
-    font-size: 1rem;
-    margin-bottom: 30px;
-    color: #555;
-  }
-  
-  .auth-form label {
-    margin: 10px 0 5px;
-    font-weight: 500;
-  }
-  
-  .auth-form input[type="email"],
-  .auth-form input[type="password"],
+
+  .auth-form input[type='email'],
+  .auth-form input[type='password'],
   .auth-form select {
-    padding: 12px;
-    font-size: 1.1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    transition: border-color 0.3s;
+    padding: 10px;
+    font-size: 1rem;
   }
-  
-  .auth-form input:focus {
-    border-color: #03a9f4;
-    outline: none;
-  }
-  
-  .auth-error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  
+
   .btn.submit {
-    background-color: #03a9f4;
-    color: white;
-    font-weight: bold;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
+    padding: 12px;
+    font-size: 1rem;
   }
-  
-  .btn.submit:hover {
-    background-color: #0288d1;
-  }
-  
-  .auth-switch {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.95rem;
-  }
-  
-  .auth-switch a {
-    color: #03a9f4;
-    text-decoration: none;
-  }
-  
-  .auth-switch a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive styles for smaller screens */
-  @media (max-width: 480px) {
-    .auth-page {
-      align-items: center; /* Center vertically on mobile */
-    }
-  
-    .auth-form {
-      padding: 30px 20px;
-      max-width: 100%;
-      margin-top: 0; /* Remove top margin to allow vertical centering */
-    }
-  
-    .auth-title {
-      font-size: 2rem;
-    }
-  
-    .auth-form input[type="email"],
-    .auth-form input[type="password"],
-    .auth-form select {
-      padding: 10px;
-      font-size: 1rem;
-    }
-  
-    .btn.submit {
-      padding: 12px;
-      font-size: 1rem;
-    }
-  }
-  
+}

@@ -1,0 +1,50 @@
+.lang-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .lang-modal {
+    background-color: #f7f9fc;
+    padding: 24px 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 250px;
+    font-family: inherit;
+  }
+  
+  .lang-modal h3 {
+    margin-bottom: 16px;
+    color: var(--main-blue-clr);
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .lang-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .lang-list li {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    color: #333;
+  }
+  
+  .lang-list li:hover {
+    background-color: #e6f2fd;
+  }
+  

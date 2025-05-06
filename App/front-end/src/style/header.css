@@ -34,10 +34,16 @@ nav {
   max-width: 900px;
 }
 
+.flipped {
+  transform: scaleX(-1);
+  display: inline-block;
+  line-height: 1;
+}
+
 .guest,
 .user {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   flex-wrap: wrap;
 }
 

@@ -45,10 +45,20 @@
 .primary-btn {
   background-color: var(--main-blue-clr);
   color: white;
+  box-shadow: 0 4px 0 #026aa7, 0 6px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 0;
+  transition: all 0.15s ease;
 }
 
 .primary-btn:hover {
   background-color: #0288d1;
+}
+
+.primary-btn:active {
+  top: 2px;
+  box-shadow: 0 2px 0 #026aa7, 0 4px 6px rgba(0, 0, 0, 0.08);
+  transform: scale(var(--scale-value));
 }
 
 .secondary-btn {
@@ -94,8 +104,8 @@
   transform: translateY(-4px);
 }
 
-.feature-card:active { 
-    transform: scale(var(--scale-value));
+.feature-card:active {
+  transform: scale(var(--scale-value));
 }
 
 /* How It Works */

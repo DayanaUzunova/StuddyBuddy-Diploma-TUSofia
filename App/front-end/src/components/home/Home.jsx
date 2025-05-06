@@ -1,7 +1,11 @@
 import React from 'react';
 import '../../style/landing.css'
+import { useAuth } from '../../context/AuthContext';
 
 export default function LandingPage() {
+
+    const { user } = useAuth();
+
     return (
         <div className="landing">
             <section className="hero container">
@@ -9,8 +13,9 @@ export default function LandingPage() {
                     <h1>Your Personal Learning Companion</h1>
                     <p>Organize your studies, chat with students or teachers, and have fun while learning.</p>
                     <div className="cta-buttons">
-                        <button className="primary-btn">Get Started</button>
-                        <button className="secondary-btn">Sign Up Free</button>
+                        <button className="primary-btn">
+                            {!user ? 'Sign Up for Free 📝' : 'View your Profile 👤'}
+                        </button>
                     </div>
                 </div>
             </section>
@@ -27,7 +32,7 @@ export default function LandingPage() {
 
             <section className="final-cta container">
                 <h2>Ready to improve your study game?</h2>
-                <button className="primary-btn">Join Now</button>
+                <button className="primary-btn">{!user ? "Join Now" : 'Jump to the Playground! 🕹️'}</button>
             </section>
         </div>
 

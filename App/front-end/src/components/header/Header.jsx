@@ -33,8 +33,8 @@ export default function Header() {
             </div>
           ) : (
             <div className="guest">
-              <p className='nav_button' onClick={() => navigate('/login')}>Login 🔐</p>
               <p className='nav_button' onClick={() => navigate('/register')}>Register 📝</p>
+              <p className='nav_button' onClick={() => navigate('/login')}>Login 🔐</p>
             </div>
           )}
           <div className='language_picker'>

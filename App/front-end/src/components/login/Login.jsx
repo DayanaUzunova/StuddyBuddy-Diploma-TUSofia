@@ -44,10 +44,10 @@ export default function Login() {
     <section id="login-page" className="auth-page">
       <form id="login" className="auth-form" onSubmit={submitHandler}>
         <div className="auth-container">
-          <h1 className="auth-title">Welcome Back</h1>
-          <p className="auth-subtitle">Log in to continue your learning journey</p>
-
-          <label htmlFor="email">Email</label>
+          <h1 className="auth-title">👋 Welcome Back</h1>
+          <p className="auth-subtitle">🔐 Log in to continue your learning journey</p>
+  
+          <label htmlFor="email">📧 Email</label>
           <input
             type="email"
             id="email"
@@ -57,8 +57,8 @@ export default function Login() {
             placeholder="Enter your email"
             required
           />
-
-          <label htmlFor="password">Password</label>
+  
+          <label htmlFor="password">🔑 Password</label>
           <input
             type="password"
             id="password"
@@ -68,16 +68,17 @@ export default function Login() {
             placeholder="Enter your password"
             required
           />
-
+  
           {error && <p className="auth-error">{error}</p>}
-
-          <input type="submit" className="btn submit" value="Login" />
-
+  
+          <input type="submit" className="btn submit" value="🔓 Login" />
+  
           <p className="auth-switch">
-            Don’t have an account? <a href="/register">Register here</a>
+            Don’t have an account? <a href="/register">📝 Register here</a>
           </p>
         </div>
       </form>
     </section>
   );
+  
 }

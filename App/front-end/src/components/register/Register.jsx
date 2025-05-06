@@ -44,75 +44,76 @@ export default function Register() {
 
     return (
         <section className="register-page">
-            <div className="register-container">
-                <h1 className="register-title">Create an Account</h1>
-                <form className="register-form" onSubmit={submitHandler}>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={values.username}
-                        onChange={changeHandler}
-                        placeholder="Enter your username"
-                        required
-                    />
-
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={values.email}
-                        onChange={changeHandler}
-                        placeholder="Enter your email"
-                        required
-                    />
-
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={values.password}
-                        onChange={changeHandler}
-                        placeholder="Enter your password"
-                        required
-                    />
-
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={values.confirmPassword}
-                        onChange={changeHandler}
-                        placeholder="Confirm your password"
-                        required
-                    />
-
-                    <label htmlFor="role">Role</label>
-                    <select
-                        id="role"
-                        name="role"
-                        value={values.role}
-                        onChange={changeHandler}
-                        required
-                    >
-                        <option value="">Select Role</option>
-                        <option value="student">Student</option>
-                        <option value="teacher">Teacher</option>
-                    </select>
-
-                    {error && <p className="register-error">{error}</p>}
-
-                    <button type="submit" className="primary-btn">Register</button>
-
-                    <p className="register-login-link">
-                        Already have an account? <a href="/login">Login here</a>
-                    </p>
-                </form>
-            </div>
+          <div className="register-container">
+            <h1 className="register-title">📝 Create an Account</h1>
+            <form className="register-form" onSubmit={submitHandler}>
+              <label htmlFor="username">👤 Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={values.username}
+                onChange={changeHandler}
+                placeholder="Enter your username"
+                required
+              />
+      
+              <label htmlFor="email">📧 Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={values.email}
+                onChange={changeHandler}
+                placeholder="Enter your email"
+                required
+              />
+      
+              <label htmlFor="password">🔑 Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={values.password}
+                onChange={changeHandler}
+                placeholder="Enter your password"
+                required
+              />
+      
+              <label htmlFor="confirmPassword">🔁 Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={values.confirmPassword}
+                onChange={changeHandler}
+                placeholder="Confirm your password"
+                required
+              />
+      
+              <label htmlFor="role">🎓 Role</label>
+              <select
+                id="role"
+                name="role"
+                value={values.role}
+                onChange={changeHandler}
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="student">👩‍🎓 Student</option>
+                <option value="teacher">👨‍🏫 Teacher</option>
+              </select>
+      
+              {error && <p className="register-error">{error}</p>}
+      
+              <button type="submit" className="primary-btn">🚀 Register</button>
+      
+              <p className="register-login-link">
+                Already have an account? <a href="/login">🔐 Login here</a>
+              </p>
+            </form>
+          </div>
         </section>
-    );
+      );
+      
 }

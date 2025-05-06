@@ -3,9 +3,8 @@ import Home from './components/home/Home';
 import Register from './components/register/Register';
 import Header from './components/header/Header';
 import Login from './components/login/Login';
-import Logout from './components/logout/Logout';
 import PrivateRoute from './components/util/privateRoute';
-import Footer from './components/footer/Footer'; // ⬅️ Import Footer
+import Footer from './components/footer/Footer';
 import { useAuth } from './context/AuthContext';
 import './App.css';
 import Playground from './components/playground/Playground';

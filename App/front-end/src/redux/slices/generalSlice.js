@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    language: ''
+    language: '',
+    isFooterVisible: null
 };
 
 const generalSlice = createSlice({
@@ -11,8 +12,11 @@ const generalSlice = createSlice({
         setLanguage: (state, action) => {
             state.language = action.payload;
         },
+        setIsFooterVisible: (state, action) => {
+            state.isFooterVisible = action.payload
+        }
     },
 });
 
-export const { setLanguage } = generalSlice.actions;
+export const { setLanguage, setIsFooterVisible } = generalSlice.actions;
 export default generalSlice.reducer;

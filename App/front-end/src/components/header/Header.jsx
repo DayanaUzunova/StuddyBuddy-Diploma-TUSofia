@@ -28,7 +28,7 @@ export default function Header() {
         <nav>
           {user ? (
             <div className="user">
-              <p className='nav_button' onClick={() => navigate('/login')}>Playground 🕹️</p>
+              <p className='nav_button' onClick={() => navigate('/playground')} >Playground 🕹️</p>
               <p className='nav_button' onClick={handleLogout}>Logout <span className="flipped">🏃‍♂️</span></p>
             </div>
           ) : (

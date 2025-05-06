@@ -18,12 +18,3 @@ body {
   margin: 0;
 }
 
-.app-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.outer-box {
-  flex: 1; /* This makes the middle content grow to fill space */
-}

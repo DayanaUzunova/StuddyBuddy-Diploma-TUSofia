@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../style/footer.css';
 
-export default function Footer() {
+export default function Footer({ visible = true }) {
     return (
-        <footer className="footer">
+        <footer className={`footer ${!visible ? 'footer-hidden' : ''}`}>
             <div className="footer-container container">
                 <div className="footer-logo">
                     <h3>StudyBuddy</h3>

@@ -8,14 +8,17 @@ import PrivateRoute from './components/util/privateRoute';
 import Footer from './components/footer/Footer'; // ⬅️ Import Footer
 import { useAuth } from './context/AuthContext';
 import './App.css';
+import Playground from './components/playground/Playground';
+import { useState } from 'react';
 
 const App = () => {
-  const { user } = useAuth();
+  const [footerVisible, setFooterVisible] = useState(true);
+
+  const { user } = useAuth()
 
   return (
-    <div className="app-wrapper"> {/* ⬅️ Wrapper with flex */}
+    <div className="app-wrapper">
       <Header />
-
       <div className="outer-box">
         <Routes>
           <Route
@@ -35,10 +38,17 @@ const App = () => {
             }
           />
           <Route path="/" element={<Home />} />
+          <Route
+            path="/playground"
+            element={
+              <PrivateRoute isAllowed={!!user}>
+                <Playground setFooterVisibility={setFooterVisible} />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </div>
-
-      <Footer />
+      <Footer  />
     </div>
   );
 };

@@ -1,0 +1,130 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.outer-box {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.playground {
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.playground-sidebar {
+  width: 220px;
+  background-color: #f7f9fc;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.playground-sidebar h2 {
+  font-size: 1.4rem;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  color: var(--main-blue-clr);
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-menu li {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+  color: #333;
+}
+
+.sidebar-menu li:hover {
+  background-color: #e6f2ff;
+}
+
+.sidebar-menu li.active {
+  background-color: #d0e9ff;
+  font-weight: bold;
+}
+
+.playground-content {
+  flex-grow: 1;
+  padding: 60px;
+  overflow-y: auto;
+}
+
+footer {
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+footer.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .playground {
+    flex-direction: column;
+    padding-bottom: 60px;
+  }
+
+  .playground-sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 0;
+    border-right: none;
+    border-top: 1px solid #ddd;
+    background-color: #f7f9fc;
+    z-index: 1000;
+    height: 60px;
+    overflow-y: visible;
+    width: 100vw;
+  }
+
+  .playground-sidebar h2 {
+    display: none;
+  }
+
+  .sidebar-menu {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+  }
+
+  .sidebar-menu li {
+    flex: 1;
+    text-align: center;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 6;
+  }
+
+  .sidebar-menu li span.emoji {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-menu li .text {
+    display: none;
+  }
+
+  .playground-content {
+    padding: 20px;
+    padding-bottom: 80px;
+  }
+}

@@ -44,6 +44,10 @@
   min-width: 120px;
 }
 
+.footer-hidden {
+  display: none;
+}
+
 .footer-links a,
 .footer-social a {
   color: var(--main-blue-clr);

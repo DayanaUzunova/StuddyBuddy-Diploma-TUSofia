@@ -5,6 +5,7 @@ import Header from './components/header/Header';
 import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
 import PrivateRoute from './components/util/privateRoute';
+import Footer from './components/footer/Footer'; // ⬅️ Import Footer
 import { useAuth } from './context/AuthContext';
 import './App.css';
 
@@ -12,7 +13,7 @@ const App = () => {
   const { user } = useAuth();
 
   return (
-    <>
+    <div className="app-wrapper"> {/* ⬅️ Wrapper with flex */}
       <Header />
 
       <div className="outer-box">
@@ -36,8 +37,11 @@ const App = () => {
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
-    </>
+
+      <Footer />
+    </div>
   );
 };
+
 
 export default App;

@@ -9,12 +9,18 @@ import Footer from './components/footer/Footer'; // ⬅️ Import Footer
 import { useAuth } from './context/AuthContext';
 import './App.css';
 import Playground from './components/playground/Playground';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 
 const App = () => {
   const [footerVisible, setFooterVisible] = useState(true);
+  const { user } = useAuth();
+  const location = useLocation();
 
-  const { user } = useAuth()
+  useEffect(() => {
+    // Hide footer on "/playground"
+    setFooterVisible(location.pathname !== "/playground");
+  }, [location.pathname]);
 
   return (
     <div className="app-wrapper">
@@ -48,10 +54,9 @@ const App = () => {
           />
         </Routes>
       </div>
-      <Footer  />
+      {footerVisible && <Footer />}
     </div>
   );
 };
-
 
 export default App;

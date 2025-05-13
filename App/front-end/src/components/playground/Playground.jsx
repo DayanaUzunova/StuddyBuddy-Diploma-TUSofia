@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import '../../style/playground.css';
+import { useAuth } from '../../context/AuthContext';
+import TeacherGames from './sections/teacher/TeacherGames';
+import StudentGames from './sections/student/StudentGames';
+import TeacherProfile from './sections/teacher/TeacherProfile';
 
 const Playground = ({ setFooterVisibility }) => {
     const [activeSection, setActiveSection] = useState('Profile');
+
+    const { user } = useAuth();
 
     const sections = [
         { name: 'Profile', emoji: '🧑' },
@@ -36,13 +42,15 @@ const Playground = ({ setFooterVisibility }) => {
             </aside>
 
             <main className="playground-content">
-                <h1>
-                    {sections.find(s => s.name === activeSection)?.emoji} {activeSection}
-                </h1>
-                <p>
-                    This is the <strong>{activeSection}</strong> section.
-                </p>
+                {activeSection === 'Profile' && (
+                    user.role === 'teacher' ? <TeacherProfile /> : <div>Student profile coming soon!</div>
+                )}
+
+                {activeSection === 'Games' && (
+                    user.role === 'teacher' ? <TeacherGames /> : <StudentGames />
+                )}
             </main>
+
         </div>
     );
 };

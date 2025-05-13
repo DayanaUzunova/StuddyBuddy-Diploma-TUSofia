@@ -10,16 +10,46 @@ import './App.css';
 import Playground from './components/playground/Playground';
 import { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
+import axiosInstance from './api/api';
 
 const App = () => {
   const [footerVisible, setFooterVisible] = useState(true);
   const { user } = useAuth();
   const location = useLocation();
 
+  const checkTokenExpiration = () => {
+    try {
+      const decoded = jwt_decode(token);
+
+      if (decoded.exp * 1000 < Date.now()) {
+        localStorage.removeItem("token");
+        setUser(null);
+        return;
+      }
+    } catch (err) {
+      console.error("Invalid token:", err);
+      localStorage.removeItem("token");
+      setUser(null);
+      return;
+    };
+  };
+
+  // Hide footer on "/playground"
   useEffect(() => {
-    // Hide footer on "/playground"
     setFooterVisible(location.pathname !== "/playground");
   }, [location.pathname]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    /*   if (!token) {
+        setUser(null);
+        return;
+      }; */
+
+    // checkTokenExpiration();
+
+  }, []);
 
   return (
     <div className="app-wrapper">

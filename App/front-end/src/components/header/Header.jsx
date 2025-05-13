@@ -16,8 +16,8 @@ export default function Header() {
     setLangModalOpen(false);
   };
 
-  const handleLogout = () => {
-    removeToken();
+  const handleLogout = async () => {
+    await removeToken();
     navigate('/')
   };
 

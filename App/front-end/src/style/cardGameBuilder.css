@@ -1,0 +1,126 @@
+.card-game-builder {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 2.5rem;
+    color: var(--main-blue-clr);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .builder-section {
+    margin-bottom: 40px;
+
+    label {
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    input[type='text'] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    select,
+    .dropdown {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      font-size: 1rem;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='gray' d='M2 0L0 2h4z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s ease-in-out;
+
+      &:focus {
+        border-color: #7a9cff;
+        outline: none;
+        background-color: #fff;
+      }
+    }
+
+    .description-textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      height: 100px;
+      resize: none;
+      line-height: 1.5;
+      box-sizing: border-box;
+    }
+
+    .card-entry {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+
+      input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #e53935;
+        cursor: pointer;
+        padding: 0 10px;
+      }
+    }
+
+    .add-btn {
+      background-color: #e0f7fa;
+      color: var(--main-blue-clr);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #b2ebf2;
+      }
+    }
+  }
+
+  .builder-actions {
+    text-align: center;
+
+    .primary-btn {
+      font-size: 1.1rem;
+      padding: 14px 28px;
+    }
+  }
+
+  .form-error {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+}

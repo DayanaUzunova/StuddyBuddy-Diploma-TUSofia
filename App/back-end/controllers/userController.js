@@ -48,34 +48,53 @@ const loginUser = async (req, res) => {
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Моля, попълнете всички полета' });
-    };
+    }
 
     const user = await getUserOnLogin(email);
 
     if (!user || !await bcrypt.compare(password, user.password)) {
-      return res.status(400).json({ message: 'Invalid user or password!' })
-    };
+      return res.status(400).json({ message: 'Invalid user or password!' });
+    }
 
-    const jwt = generateToken(user?.id, user?.username, user?.email, user?.role);
+    const jwt = generateToken(user.id, user.username, user.email, user.role);
+
+    res.cookie('token', jwt, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    });
 
     res.status(200).json({
-      _id: user.id,
+      id: user.id,
       username: user.username,
       email: user.email,
-      password: user.password,
-      role: user.role,
-      token: jwt
+      role: user.role
     });
+
   } catch (err) {
-    console.log(err);
-  };
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
-const getLanguage = async (req, res) => {
+
+const logoutUser = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'Lax',
+    path: '/',
+  });
+
+  res.status(200).json({ message: 'Logged out successfully' });
+};
+
+
+const getUser = async (req, res) => {
   try {
-
-
-
+    const { id, username, email, role } = req.user;
+    res.json({ id, username, email, role });
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: err.message })
@@ -83,7 +102,7 @@ const getLanguage = async (req, res) => {
 }
 
 const generateToken = (id, username, email, role) => {
-  return jwt.sign({ id, username, email, role }, process.env.JWT_SECRET, { expiresIn: '10s' });
+  return jwt.sign({ id, username, email, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
-module.exports = { registerUser, loginUser, getLanguage };
+module.exports = { registerUser, loginUser, getUser, logoutUser };

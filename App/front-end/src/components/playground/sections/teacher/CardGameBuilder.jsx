@@ -130,7 +130,7 @@ const CardGameBuilder = () => {
       </div>
 
       <div className="builder-section">
-        <h2>Flashcards</h2>
+        <h2>🃏 Cards</h2>
         {cards.map((card, index) => (
           <div className="card-entry" key={index}>
             <input

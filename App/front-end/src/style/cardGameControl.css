@@ -1,0 +1,138 @@
+.card-game-builder {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .card-game-builder h1 {
+    font-size: 2.5rem;
+    color: var(--main-blue-clr);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .builder-section {
+    margin-bottom: 40px;
+  }
+  
+  .builder-section label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .builder-section input[type='text'] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .description-textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    height: 100px;
+    resize: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+  }
+  
+  .card-entry {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .card-entry input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .card-entry .remove-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #e53935;
+    cursor: pointer;
+    padding: 0 10px;
+  }
+  
+  .add-btn {
+    background-color: #e0f7fa;
+    color: var(--main-blue-clr);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+  
+  .add-btn:hover {
+    background-color: #b2ebf2;
+  }
+  
+  /* Button group */
+  .builder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  /* Shared button style */
+  .action-btn {
+    font-size: 1.1rem;
+    padding: 14px 28px;
+    min-width: 180px;
+    text-align: center;
+    flex: 1 1 180px;
+    max-width: 250px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Save & Back */
+  .primary-btn {
+    background-color: var(--main-blue-clr);
+    color: white;
+    border: none;
+  }
+  
+  .primary-btn:hover {
+    background-color: #005bb5;
+  }
+  
+  /* Delete */
+  .danger-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+  }
+  
+  .danger-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  @media (max-width: 600px) {
+    .action-btn {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+  

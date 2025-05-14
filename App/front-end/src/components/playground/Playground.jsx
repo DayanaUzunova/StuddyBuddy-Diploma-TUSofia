@@ -43,11 +43,11 @@ const Playground = ({ setFooterVisibility }) => {
 
             <main className="playground-content">
                 {activeSection === 'Profile' && (
-                    user.role === 'teacher' ? <TeacherProfile /> : <div>Student profile coming soon!</div>
+                    user.role === 'teacher' ? <TeacherProfile setActiveSection={setActiveSection} /> : <div>Student profile coming soon!</div>
                 )}
 
                 {activeSection === 'Games' && (
-                    user.role === 'teacher' ? <TeacherGames /> : <StudentGames />
+                    user.role === 'teacher' ? <TeacherGames setActiveSection={setActiveSection} /> : <StudentGames />
                 )}
             </main>
 

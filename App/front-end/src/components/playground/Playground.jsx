@@ -4,9 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 import TeacherGames from './sections/teacher/TeacherGames';
 import StudentGames from './sections/student/StudentGames';
 import TeacherProfile from './sections/teacher/TeacherProfile';
+import CardGame from './sections/student/CardGame';
 
 const Playground = ({ setFooterVisibility }) => {
     const [activeSection, setActiveSection] = useState('Profile');
+    const [gameId, setGameId] = useState(null);
 
     const { user } = useAuth();
 
@@ -47,7 +49,11 @@ const Playground = ({ setFooterVisibility }) => {
                 )}
 
                 {activeSection === 'Games' && (
-                    user.role === 'teacher' ? <TeacherGames setActiveSection={setActiveSection} /> : <StudentGames />
+                    user.role === 'teacher' ? <TeacherGames setActiveSection={setActiveSection} /> : <StudentGames setActiveSection={setActiveSection} setGameId={setGameId} />
+                )}
+
+                {activeSection === 'CardGame' && (
+                    user.role === 'teacher' ? <TeacherGames setActiveSection={setActiveSection} /> : <CardGame setActiveSection={setActiveSection} gameId={gameId} />
                 )}
             </main>
 

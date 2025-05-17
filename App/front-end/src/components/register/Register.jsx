@@ -23,22 +23,29 @@ export default function Register() {
       if (password !== confirmPassword) {
         setError('Passwords do not match!');
         return;
-      };
+      }
 
-      const response = await axiosInstance.post("http://localhost:3001/api/users/register", { username, email, password, role });
+      const response = await axiosInstance.post("http://localhost:3001/api/users/register", {
+        username,
+        email,
+        password,
+        role
+      });
 
       if (!response?.data) {
         throw new Error('Invalid response data from server!');
-      };
+      }
 
-      const jwt = response?.data?.token;
+      const jwt = response.data.token;
       setUser(jwt);
 
       navigate("/");
     } catch (err) {
-      setError(err.message || "Registration failed!");
+      const message = err.response?.data?.message || err.message || "Registration failed!";
+      setError(message);
     }
   };
+
 
   const { values, changeHandler, submitHandler } = useForm(initialValues, registerHandler);
 

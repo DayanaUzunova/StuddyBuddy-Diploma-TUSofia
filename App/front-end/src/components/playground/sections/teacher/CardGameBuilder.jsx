@@ -7,31 +7,31 @@ const CardGameBuilder = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subject, setSubject] = useState('');
-  const [cards, setCards] = useState([{ question: '', answer: '' }]);
+  const [cards, setCards] = useState([
+    { question: '', correctAnswer: '', wrongAnswers: ['', ''] }
+  ]);
   const [formError, setFormError] = useState('');
 
   const navigate = useNavigate();
 
   const subjectOptions = [
-    'Math',
-    'Science',
-    'History',
-    'Geography',
-    'Language',
-    'Art',
-    'Music',
-    'Technology'
+    'Math', 'Science', 'History', 'Geography',
+    'Language', 'Art', 'Music', 'Technology'
   ];
 
-  const handleCardChange = (index, field, value) => {
+  const handleCardChange = (index, field, value, wrongIndex = null) => {
     const updatedCards = [...cards];
-    updatedCards[index][field] = value;
+    if (field === 'wrongAnswers' && wrongIndex !== null) {
+      updatedCards[index].wrongAnswers[wrongIndex] = value;
+    } else {
+      updatedCards[index][field] = value;
+    }
     setCards(updatedCards);
     setFormError('');
   };
 
   const addCard = () => {
-    setCards([...cards, { question: '', answer: '' }]);
+    setCards([...cards, { question: '', correctAnswer: '', wrongAnswers: ['', ''] }]);
   };
 
   const removeCard = (index) => {
@@ -39,7 +39,6 @@ const CardGameBuilder = () => {
     updatedCards.splice(index, 1);
     setCards(updatedCards);
   };
-
 
   const handleSubmit = async () => {
     try {
@@ -59,32 +58,35 @@ const CardGameBuilder = () => {
       }
 
       for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        if (!card.question.trim() || !card.answer.trim()) {
-          setFormError(`❗ Please fill in both the question and answer for card #${i + 1}.`);
+        const { question, correctAnswer, wrongAnswers } = cards[i];
+        if (!question.trim() || !correctAnswer.trim() || wrongAnswers.some(w => !w.trim())) {
+          setFormError(`❗ Fill in all fields for card #${i + 1}.`);
           return;
         }
       }
 
-      setFormError('');
+      const formattedCards = cards.map(card => ({
+        question: card.question,
+        correctAnswer: card.correctAnswer,
+        wrongAnswers: card.wrongAnswers
+      }));
 
       const gameData = {
         title,
         subject,
         description,
-        cards
+        cards: formattedCards,
+        type: 'card'
       };
 
       await axiosInstance.post('/api/create-game', gameData, { withCredentials: true });
-
       navigate('/playground');
 
     } catch (error) {
       console.error('Error creating game:', error);
       setFormError('❗ Failed to save the game. Please try again later.');
-    };
+    }
   };
-
 
   return (
     <div className="card-game-builder container">
@@ -96,20 +98,14 @@ const CardGameBuilder = () => {
           type="text"
           value={title}
           placeholder="e.g. French Vocabulary - Basics"
-          onChange={(e) => {
-            setTitle(e.target.value);
-            setFormError('');
-          }}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <label>🗂️ Subject</label>
         <select
           className="dropdown"
           value={subject}
-          onChange={(e) => {
-            setSubject(e.target.value);
-            setFormError('');
-          }}
+          onChange={(e) => setSubject(e.target.value)}
         >
           <option value="">Select a subject</option>
           {subjectOptions.map((subj) => (
@@ -122,10 +118,7 @@ const CardGameBuilder = () => {
           className="description-textarea"
           placeholder="e.g. This game helps beginners learn essential French words."
           value={description}
-          onChange={(e) => {
-            setDescription(e.target.value);
-            setFormError('');
-          }}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
 
@@ -141,16 +134,24 @@ const CardGameBuilder = () => {
             />
             <input
               type="text"
-              placeholder="💡 Answer"
-              value={card.answer}
-              onChange={(e) => handleCardChange(index, 'answer', e.target.value)}
+              placeholder="✅ Correct Answer"
+              value={card.correctAnswer}
+              onChange={(e) => handleCardChange(index, 'correctAnswer', e.target.value)}
             />
+            {card.wrongAnswers.map((wrong, i) => (
+              <input
+                key={i}
+                type="text"
+                placeholder={`❌ Wrong Answer ${i + 1}`}
+                value={wrong}
+                onChange={(e) => handleCardChange(index, 'wrongAnswers', e.target.value, i)}
+              />
+            ))}
             {cards.length > 1 && (
               <button className="remove-btn" onClick={() => removeCard(index)}>✖</button>
             )}
           </div>
         ))}
-
         <button className="add-btn" onClick={addCard}>➕ Add Card</button>
       </div>
 

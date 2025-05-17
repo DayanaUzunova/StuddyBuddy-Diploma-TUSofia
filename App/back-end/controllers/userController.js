@@ -10,11 +10,11 @@ const registerUser = async (req, res) => {
 
     if (!username || !email || !password || !role) {
       throw new Error('Invalid params in register user!');
-    };
+    }
 
     if (role === 'admin') {
       throw new Error('Cannot register an admin!');
-    };
+    }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,9 +37,14 @@ const registerUser = async (req, res) => {
       token: jwt
     });
   } catch (error) {
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return res.status(400).json({ message: 'Email is already taken' });
+    }
+
     res.status(400).json({ error: error.message });
   }
 };
+
 
 // Login User
 const loginUser = async (req, res) => {

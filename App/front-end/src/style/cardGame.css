@@ -1,0 +1,121 @@
+.card-game-play {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(145deg, #ffffff, #f1f1f1);
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.card-game-play h2 {
+  font-size: 26px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.card-question {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 25px;
+  color: #444;
+}
+
+.answers-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.answer-btn {
+  flex: 1 1 45%;
+  max-width: 45%;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.answers-grid .answer-btn:nth-child(3) {
+  flex: 0 0 100%;
+  max-width: 60%;
+  margin-top: 10px;
+}
+
+.answer-btn:hover:not(.disabled):not(.wrong):not(.correct) {
+  background-color: #d0d0ff;
+}
+
+.answer-btn.correct {
+  background-color: #a3e4a3;
+  color: #2c662d;
+}
+
+.answer-btn.wrong {
+  background-color: #f8a5a5;
+  color: #721c24;
+}
+
+.answer-btn.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.primary-btn {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.primary-btn:hover {
+  background-color: #357abd;
+}
+
+.secondary-btn {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.secondary-btn:hover {
+  background-color: #ddd;
+}
+
+.progress {
+  font-size: 14px;
+  color: #777;
+  margin-top: 20px;
+}
+
+.result-screen h2 {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -109,6 +109,52 @@
   margin-bottom: 15px;
 }
 
+.game-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  padding: 16px;
+}
+
+.game-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.approval-badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.approval-badge.approved {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.approval-badge.not-approved {
+  background-color: #ffe0b2;
+  color: #e65100;
+}
+
+.game-card-subject {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.game-card-note {
+  margin-top: 12px;
+  color: #e57373;
+  font-size: 0.85rem;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -11,6 +11,7 @@ const CardGameBuilder = () => {
     { question: '', correctAnswer: '', wrongAnswers: ['', ''] }
   ]);
   const [formError, setFormError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -80,7 +81,15 @@ const CardGameBuilder = () => {
       };
 
       await axiosInstance.post('/api/create-game', gameData, { withCredentials: true });
-      navigate('/playground');
+
+      setSuccessMessage('✅ Thank you for creating a game! It’s now awaiting admin approval.');
+      setFormError('');
+
+      // Optionally reset form
+      setTitle('');
+      setSubject('');
+      setDescription('');
+      setCards([{ question: '', correctAnswer: '', wrongAnswers: ['', ''] }]);
 
     } catch (error) {
       console.error('Error creating game:', error);
@@ -157,6 +166,10 @@ const CardGameBuilder = () => {
 
       {formError && (
         <div className="form-error">{formError}</div>
+      )}
+
+      {successMessage && (
+        <div className="form-success">{successMessage}</div>
       )}
 
       <div className="builder-actions">

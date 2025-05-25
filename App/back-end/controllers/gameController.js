@@ -25,7 +25,7 @@ const createGame = async (req, res) => {
             description,
             cards,
             createdBy: userId,
-            isApproved: true
+            isApproved: false
         });
 
         const savedGame = await newGame.save();
@@ -147,6 +147,26 @@ const getCardGame = async (req, res) => {
     }
 };
 
+const approveGame = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedGame = await Game.findByIdAndUpdate(
+            id,
+            { isApproved: true },
+            { new: true }
+        );
+
+        if (!updatedGame) {
+            return res.status(404).json({ message: "Game not found" });
+        }
+
+        res.status(200).json(updatedGame);
+    } catch (err) {
+        console.error("Error approving game:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
 
 module.exports = {
     createGame,
@@ -154,5 +174,6 @@ module.exports = {
     editCardGame,
     deleteCardGame,
     getGames,
-    getCardGame
+    getCardGame,
+    approveGame
 };

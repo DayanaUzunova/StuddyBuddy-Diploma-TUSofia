@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../style/landing.css'
 import { useAuth } from '../../context/AuthContext';
 
 export default function LandingPage() {
 
     const { user } = useAuth();
+
 
     return (
         <div className="landing">

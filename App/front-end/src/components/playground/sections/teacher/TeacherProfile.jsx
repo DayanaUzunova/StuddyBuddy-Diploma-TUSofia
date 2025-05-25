@@ -24,7 +24,6 @@ const TeacherProfile = ({ setActiveSection }) => {
     fetchGames();
   }, []);
 
-  // Pass fetchGames to refresh after edit/delete
   if (selectedGame) {
     return (
       <CardGameControl
@@ -56,12 +55,23 @@ const TeacherProfile = ({ setActiveSection }) => {
               createdGames.map((game) => (
                 <div
                   key={game._id}
-                  className="feature-card"
-                  style={{ cursor: 'pointer' }}
+                  className="feature-card game-card"
                   onClick={() => setSelectedGame(game)}
                 >
-                  <strong>{game.title}</strong>
-                  <div style={{ marginTop: '6px', color: '#777' }}>{game.subject} Game</div>
+                  <div className="game-card-header">
+                    <strong>{game.title}</strong>
+                    <span
+                      className={`approval-badge ${game.isApproved ? 'approved' : 'not-approved'}`}
+                    >
+                      {game.isApproved ? '✅ Approved' : '⏳ Not Approved'}
+                    </span>
+                  </div>
+                  <div className="game-card-subject">{game.subject} Game</div>
+                  {!game.isApproved && (
+                    <div className="game-card-note">
+                      This game is waiting for admin approval.
+                    </div>
+                  )}
                 </div>
               ))
             )}

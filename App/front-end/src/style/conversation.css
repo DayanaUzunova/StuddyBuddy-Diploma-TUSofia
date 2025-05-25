@@ -1,0 +1,70 @@
+.conversation.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.thread-description {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.thread-meta {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.thread-status {
+  color: #b33a3a;
+  background: #fff2f2;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid red;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Comments */
+.comments-section {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.comment-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+}
+
+.comment-item {
+  background: white;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* New Comment Form */
+.comment-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-form textarea {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  resize: none;
+}
+
+.comment-form button {
+  align-self: flex-start;
+}

@@ -74,6 +74,9 @@ export default function Login() {
           <p className="auth-switch">
             Don’t have an account? <a href="/register">📝 Register here</a>
           </p>
+          <p className="auth-switch">
+            Forgot your password? <a href="/forgot-password">🔁 Reset here</a>
+          </p>
         </div>
       </form>
     </section>

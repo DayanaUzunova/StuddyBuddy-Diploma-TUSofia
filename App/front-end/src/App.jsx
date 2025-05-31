@@ -11,6 +11,7 @@ import Playground from './components/playground/Playground';
 import { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
 import axiosInstance from './api/api';
+import ForgotPassword from './components/forgot-password/ForgotPassword';
 
 const App = () => {
   const [footerVisible, setFooterVisible] = useState(true);
@@ -78,6 +79,14 @@ const App = () => {
             element={
               <PrivateRoute isAllowed={!!user}>
                 <Playground setFooterVisibility={setFooterVisible} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <PrivateRoute isAllowed={!user}>
+                <ForgotPassword />
               </PrivateRoute>
             }
           />

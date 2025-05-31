@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getUser, logoutUser } = require('../controllers/userController');
+const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyResetCode, resetPassword } = require('../controllers/userController');
 const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
@@ -27,5 +27,9 @@ router.patch('/api/close-conversation/:id', authenticateUser, closeConversation)
 router.get('/api/conversations', authenticateUser, getConversations);
 router.post('/api/conversations/:id/comment', authenticateUser, addComment);
 router.get('/api/conversations/:id', authenticateUser, getConversations);
+router.post('/api/users/forgot-password', sendResetCode);
+router.post('/api/users/verify-code', verifyResetCode);
+router.post('/api/users/reset-password', resetPassword);
+
 
 module.exports = router;

@@ -2,6 +2,10 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { getUserOnLogin } = require('../services/userService');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
+const passwordResetCodes = new Map();
 
 // Register User
 const registerUser = async (req, res) => {
@@ -110,4 +114,92 @@ const generateToken = (id, username, email, role) => {
   return jwt.sign({ id, username, email, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
-module.exports = { registerUser, loginUser, getUser, logoutUser };
+const sendResetCode = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Email not found' });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    passwordResetCodes.set(email, code);
+
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset Code',
+      text: `Your password reset code is: ${code}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Reset code sent' });
+  } catch (error) {
+    console.error('Error sending reset code:', error);
+    res.status(500).json({ message: 'Failed to send reset code' });
+  }
+};
+
+const verifyResetCode = (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+      return res.status(400).json({ message: 'Email and code are required' });
+    }
+
+    const validCode = passwordResetCodes.get(email);
+
+    if (!validCode || validCode !== code) {
+      return res.status(400).json({ message: 'Invalid or expired code' });
+    }
+
+    res.status(200).json({ message: 'Code verified' });
+  } catch (error) {
+    console.error('Error verifying reset code:', error);
+    res.status(500).json({ message: 'Failed to verify reset code' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, code, newPassword } = req.body;
+
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({ message: 'Email, code, and new password are required' });
+    }
+
+    const validCode = passwordResetCodes.get(email);
+
+    if (!validCode || validCode !== code) {
+      return res.status(400).json({ message: 'Invalid or expired code' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.findOneAndUpdate({ email }, { password: hashedPassword });
+
+    passwordResetCodes.delete(email);
+    res.status(200).json({ message: 'Password successfully reset' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'Failed to reset password' });
+  }
+};
+
+
+module.exports = { registerUser, loginUser, getUser, logoutUser, verifyResetCode, sendResetCode, resetPassword };

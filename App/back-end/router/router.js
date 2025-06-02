@@ -5,6 +5,7 @@ const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
 const { createConversation, deleteConversation, closeConversation, getConversations, addComment } = require('../controllers/conversationsController');
+const { createCourse, getMyCourses, getAllCourses, getCourseById, editCourse, deleteCourse } = require('../controllers/courseController');
 
 router.post('/api/users/register', registerUser); // Register
 router.post('/api/users/login', loginUser); // login
@@ -30,6 +31,12 @@ router.get('/api/conversations/:id', authenticateUser, getConversations);
 router.post('/api/users/forgot-password', sendResetCode);
 router.post('/api/users/verify-code', verifyResetCode);
 router.post('/api/users/reset-password', resetPassword);
+router.post('/api/courses/create', authenticateUser, createCourse);
+router.get('/api/courses/my', authenticateUser, getMyCourses);
+router.get('/api/courses/all', authenticateUser, getAllCourses);
+router.get('/api/courses/:id', authenticateUser, getCourseById);
+router.put('/api/courses/:id', authenticateUser, editCourse);
+router.delete('/api/courses/:id', authenticateUser, deleteCourse);
 
 
 module.exports = router;

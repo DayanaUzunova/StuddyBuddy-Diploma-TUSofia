@@ -85,7 +85,6 @@ const CardGameBuilder = () => {
       setSuccessMessage('✅ Thank you for creating a game! It’s now awaiting admin approval.');
       setFormError('');
 
-      // Optionally reset form
       setTitle('');
       setSubject('');
       setDescription('');

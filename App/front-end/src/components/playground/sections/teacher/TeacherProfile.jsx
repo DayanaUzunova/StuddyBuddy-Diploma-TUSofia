@@ -8,7 +8,7 @@ import CardCourseControl from './CardCourseControl'; // ✅ Added
 const TeacherProfile = ({ setActiveSection }) => {
   const { user } = useAuth();
 
-  const [activeTab, setActiveTab] = useState('My Games');
+  const [activeTab, setActiveTab] = useState('My Courses');
   const [createdGames, setCreatedGames] = useState([]);
   const [createdCourses, setCreatedCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,6 @@ const TeacherProfile = ({ setActiveSection }) => {
   };
 
   useEffect(() => {
-    if (activeTab === 'My Games') fetchGames();
     if (activeTab === 'My Courses') fetchCourses();
   }, [activeTab]);
 
@@ -115,7 +114,7 @@ const TeacherProfile = ({ setActiveSection }) => {
       </section>
 
       <div className="tab-buttons">
-        {['My Games', 'My Courses', 'Privacy'].map((tab) => (
+        {['My Courses', 'Privacy'].map((tab) => (
           <button
             key={tab}
             className={`tab-button ${activeTab === tab ? 'active' : ''}`}
@@ -127,46 +126,6 @@ const TeacherProfile = ({ setActiveSection }) => {
       </div>
 
       <section className="features">
-        {activeTab === 'My Games' && (
-          <>
-            <h2>My Games</h2>
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <div className="feature-grid">
-                {createdGames.length === 0 ? (
-                  <div className="feature-card">You haven’t created any games yet. 🎮</div>
-                ) : (
-                  createdGames.map((game) => (
-                    <div
-                      key={game._id}
-                      className="feature-card game-card"
-                      onClick={() => setSelectedGame(game)}
-                    >
-                      <div className="game-card-header">
-                        <strong>{game.title}</strong>
-                        <span className={`approval-badge ${game.isApproved ? 'approved' : 'not-approved'}`}>
-                          {game.isApproved ? '✅ Approved' : '⏳ Not Approved'}
-                        </span>
-                      </div>
-                      <div className="game-card-subject">{game.subject} Game</div>
-                      {!game.isApproved && (
-                        <div className="game-card-note">This game is waiting for admin approval.</div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
-            <div className="final-cta container">
-              <h2>Want to build more games?</h2>
-              <button className="primary-btn" onClick={() => setActiveSection('Games')}>
-                Create New Game 🎲
-              </button>
-            </div>
-          </>
-        )}
-
         {activeTab === 'My Courses' && (
           <>
             <h2>My Courses</h2>

@@ -5,7 +5,20 @@ const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
 const { createConversation, deleteConversation, closeConversation, getConversations, addComment } = require('../controllers/conversationsController');
-const { createCourse, getMyCourses, getAllCourses, getCourseById, editCourse, deleteCourse } = require('../controllers/courseController');
+const { createCourse, getMyCourses, getAllCourses, getCourseById, editCourse, deleteCourse, enrollInCourse, getEnrolledUsers } = require('../controllers/courseController');
+const {
+    createExam,
+    getMyExams,
+    editExam,
+    deleteExam,
+    getExams,
+    getExam,
+    approveExam,
+    getAllExams,
+    getExamById,
+    getExamsByCourseId
+} = require('../controllers/examController');
+const { submitExamResult, getResultsForTeacher, gradeExamResult, logExamViolation, getStudentResultsForCourse, getResultsByCourseId, getExamResultById } = require('../controllers/examResultController');
 
 router.post('/api/users/register', registerUser); // Register
 router.post('/api/users/login', loginUser); // login
@@ -37,6 +50,22 @@ router.get('/api/courses/all', authenticateUser, getAllCourses);
 router.get('/api/courses/:id', authenticateUser, getCourseById);
 router.put('/api/courses/:id', authenticateUser, editCourse);
 router.delete('/api/courses/:id', authenticateUser, deleteCourse);
-
+router.post('/api/courses/:id/enroll', authenticateUser, enrollInCourse);
+router.post('/api/create-exam', authenticateUser, createExam);
+router.get('/api/exams/my', authenticateUser, getMyExams);
+router.get('/api/exams/:id', authenticateUser, getExamById);
+router.get('/api/admin/get-exams', authenticateUser, getAllExams);
+router.post('/api/exams/edit/:id', authenticateUser, editExam);
+router.delete('/api/admin/delete-exam/:id', authenticateUser, deleteExam);
+router.put('/api/admin/approve-exam/:id', authenticateUser, approveExam);
+router.post('/api/submit-exam', authenticateUser, submitExamResult);
+router.get('api/exam/:examId', authenticateUser, getResultsForTeacher);
+router.put('api/grade/:id', authenticateUser, gradeExamResult);
+router.get('/api/exams/by-course/:courseId', authenticateUser, getExamsByCourseId);
+router.post('/log-exam-violation', authenticateUser, logExamViolation);
+router.get('/api/exam-results/mine/:courseId', authenticateUser, getStudentResultsForCourse);
+router.get('/api/exams/by-course/:courseId/results', authenticateUser, getResultsByCourseId);
+router.get('/api/courses/:id/enrolled-users', authenticateUser, getEnrolledUsers);
+router.get('/api/examResults/:id', authenticateUser, getExamResultById);
 
 module.exports = router;

@@ -1,11 +1,13 @@
+const Course = require('../models/Course');
 const Game = require('../models/Game');
+
 
 const createGame = async (req, res) => {
     try {
-        const { title, subject, type, description, cards } = req.body;
+        const { title, subject, type, description, cards, courseId } = req.body;
         const userId = req.user?.id;
 
-        if (!title || !subject || !type || !cards || !Array.isArray(cards) || !userId) {
+        if (!title || !subject || !type || !cards || !Array.isArray(cards) || !userId || !courseId) {
             return res.status(400).json({ message: 'Missing required fields.' });
         }
 
@@ -29,13 +31,18 @@ const createGame = async (req, res) => {
         });
 
         const savedGame = await newGame.save();
+
+        // 🔗 Link to course
+        await Course.findByIdAndUpdate(courseId, {
+            $addToSet: { games: savedGame._id }
+        });
+
         res.status(201).json(savedGame);
     } catch (err) {
         console.error('Error creating game:', err);
         res.status(500).json({ message: 'Server error while creating game.' });
     }
 };
-
 
 const getMyGames = async (req, res) => {
     try {

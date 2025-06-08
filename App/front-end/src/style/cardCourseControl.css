@@ -73,3 +73,64 @@ textarea.wide-input {
   height: 45px;
   font-size: 1rem;
 }
+
+
+/* Add below your existing styles or in media queries section */
+
+@media (max-width: 768px) {
+  .form-wrapper {
+    padding: 15px;
+    gap: 1rem;
+  }
+
+  .student-table th,
+  .student-table td {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .same-size-btn {
+    font-size: 0.9rem;
+    min-width: 120px;
+    height: 40px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .games-list li {
+    font-size: 0.9rem;
+  }
+
+  .course-description {
+    font-size: 1rem;
+  }
+}
+
+/* Better scroll styling */
+.scroll-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+/* Responsive table for small screens */
+.student-table {
+  width: 100%;
+  table-layout: auto;
+}
+
+.student-table th, .student-table td {
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Make tables touch-friendly */
+.student-table tr {
+  transition: background-color 0.2s;
+}
+.student-table tr:hover {
+  background-color: #e6f7ff;
+  cursor: pointer;
+}

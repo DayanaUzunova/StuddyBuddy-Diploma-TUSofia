@@ -95,12 +95,19 @@ const editCourse = async (req, res) => {
 
 const getAllCourses = async (req, res) => {
     try {
+        const userId = req.user?.id;
+
         const courses = await Course.find()
             .populate('games')
             .populate('enrolledUsers')
             .sort({ createdAt: -1 });
 
-        res.status(200).json(courses);
+        const enrichedCourses = courses.map(course => {
+            const isEnrolled = course.enrolledUsers.some(user => user._id.toString() === userId);
+            return { ...course.toObject(), enrolled: isEnrolled };
+        });
+
+        res.status(200).json(enrichedCourses);
     } catch (err) {
         console.error('Error fetching all courses:', err);
         res.status(500).json({ message: 'Server error while fetching courses.' });
@@ -130,6 +137,52 @@ const getCourseById = async (req, res) => {
     }
 };
 
+const enrollInCourse = async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        const courseId = req.params.id;
+
+        if (!userId || !courseId) {
+            return res.status(400).json({ message: 'Missing user or course ID' });
+        }
+
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        if (!course.enrolledUsers.includes(userId)) {
+            course.enrolledUsers.push(userId);
+            await course.save();
+        }
+
+        res.status(200).json({ message: 'Successfully enrolled in course' });
+    } catch (err) {
+        console.error('Enrollment error:', err);
+        res.status(500).json({ message: 'Failed to enroll in course' });
+    }
+};
+
+const getEnrolledUsers = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+
+        if (!courseId) {
+            return res.status(400).json({ message: 'Missing course ID' });
+        }
+
+        const course = await Course.findById(courseId).populate('enrolledUsers');
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        res.status(200).json(course.enrolledUsers);
+    } catch (err) {
+        console.error('Error fetching enrolled users:', err);
+        res.status(500).json({ message: 'Server error while fetching enrolled users.' });
+    }
+};
+
 module.exports = {
     createCourse,
     getMyCourses,
@@ -137,4 +190,6 @@ module.exports = {
     editCourse,
     getAllCourses,
     getCourseById,
+    enrollInCourse,
+    getEnrolledUsers
 };

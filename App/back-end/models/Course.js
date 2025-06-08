@@ -23,6 +23,7 @@ const CourseSchema = new mongoose.Schema(
                 ref: 'User',
             },
         ],
+        exams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exam' }],
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',

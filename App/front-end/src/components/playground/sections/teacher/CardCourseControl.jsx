@@ -141,9 +141,9 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
                 </div>
 
                 <div className="course-section">
-                    <h3>🎮 Linked Games</h3>
+                    <h3>🎮 Games</h3>
                     {games.length === 0 ? (
-                        <p>No games linked yet.</p>
+                        <p>No games yet.</p>
                     ) : (
                         <ul className="games-list">
                             {games.map(game => <li key={game._id}>🕹️ {game.title}</li>)}
@@ -152,7 +152,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
                 </div>
 
                 <div className="course-section">
-                    <h3>🧪 Exam Results</h3>
+                    <h3>🧪 Exam Submissions</h3>
                     {examResults.length === 0 ? (
                         <p>No exam submissions yet.</p>
                     ) : (

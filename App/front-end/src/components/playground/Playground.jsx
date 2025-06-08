@@ -50,7 +50,6 @@ const Playground = ({ setFooterVisibility }) => {
     else if (user.role === 'teacher') {
         sections = sections.concat([
             { name: 'Conversations', emoji: '💬' },
-            { name: 'Achievements', emoji: '🏆' },
         ]);
     };
 

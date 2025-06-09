@@ -1,7 +1,11 @@
 import React from 'react';
 import '../../style/langModal.css';
+import { useDispatch } from 'react-redux';
+import { setLanguage } from '../../redux/slices/generalSlice';
 
 const LangModal = ({ isOpen, onClose, onSelect }) => {
+    const dispatch = useDispatch();
+
     if (!isOpen) return null;
 
     return (
@@ -9,9 +13,9 @@ const LangModal = ({ isOpen, onClose, onSelect }) => {
             <div className="lang-modal" onClick={(e) => e.stopPropagation()}>
                 <h3>Select Language</h3>
                 <ul className="lang-list">
-                    <li onClick={() => onSelect('en')}>🇬🇧 English (ENG)</li>
+                    <li onClick={() => dispatch(setLanguage('en'))}>🇬🇧 English (ENG)</li>
                     <li onClick={() => onSelect('nl')}>🇳🇱 Dutch (NL)</li>
-                    <li onClick={() => onSelect('bg')}>🇧🇬 Bulgarian (BG)</li>
+                    <li onClick={() => dispatch(setLanguage('bg'))}>🇧🇬 Bulgarian (BG)</li>
                     <li onClick={() => onSelect('de')}>🇩🇪 German (GER)</li>
                 </ul>
             </div>

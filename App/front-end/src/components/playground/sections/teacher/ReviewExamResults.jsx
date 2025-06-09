@@ -5,14 +5,17 @@ import '../../../../style/reviewExamResults.css';
 const ReviewExamResults = ({ examId, resultId }) => {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [grade, setGrade] = useState('');
+    const [score, setScore] = useState('');
+    const [feedback, setFeedback] = useState('');
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         const fetchResult = async () => {
             try {
                 const res = await axiosInstance.get(`/api/examResults/${resultId}`, { withCredentials: true });
                 setResult(res.data);
-                setGrade(res.data.grade || '');
+                setScore(res.data.grade || '');
+                setFeedback(res.data.feedback || '');
             } catch (err) {
                 console.error('❌ Error fetching result:', err);
             } finally {
@@ -24,13 +27,20 @@ const ReviewExamResults = ({ examId, resultId }) => {
     }, [resultId]);
 
     const submitGrade = async () => {
-        if (!grade) return alert('❗ Please enter a grade.');
+        if (!score) return alert('❗ Please enter a grade.');
+        setSaving(true);
         try {
-            await axiosInstance.put(`/api/examResults/grade/${resultId}`, { grade }, { withCredentials: true });
-            alert('✅ Grade submitted!');
+            await axiosInstance.put(
+                `/api/examResults/grade/${resultId}`,
+                { score, feedback },
+                { withCredentials: true }
+            );
+            alert('✅ Grade and comment submitted!');
         } catch (err) {
-            console.error('❌ Grade error:', err);
+            console.error('❌ Error submitting:', err);
             alert('❌ Error grading result.');
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -66,11 +76,23 @@ const ReviewExamResults = ({ examId, resultId }) => {
                 <input
                     id="grade-input"
                     type="text"
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
+                    value={score}
+                    onChange={(e) => setScore(e.target.value)}
                     placeholder="Enter grade here..."
                 />
-                <button onClick={submitGrade}>✅ Submit Grade</button>
+
+                <label htmlFor="feedback-textarea">💬 Comment:</label>
+                <textarea
+                    id="feedback-textarea"
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    placeholder="Write feedback for the student..."
+                    rows={4}
+                />
+
+                <button onClick={submitGrade} disabled={saving}>
+                    {saving ? 'Saving...' : '✅ Submit Grade & Comment'}
+                </button>
             </div>
         </div>
     );

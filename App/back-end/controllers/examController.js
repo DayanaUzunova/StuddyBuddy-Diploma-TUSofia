@@ -114,11 +114,25 @@ const editExam = async (req, res) => {
 
 const deleteExam = async (req, res) => {
     try {
-        const exam = await Exam.findByIdAndDelete(req.params.id);
-        if (!exam) return res.status(404).json({ error: 'Exam not found' });
-        res.json({ message: 'Exam deleted' });
+        const examId = req.params.id;
+
+        const exam = await Exam.findById(examId);
+        if (!exam) {
+            return res.status(404).json({ message: 'Exam not found.' });
+        }
+
+        await ExamResult.deleteMany({ examId });
+
+        await Course.findByIdAndUpdate(exam.courseId, {
+            $pull: { exams: exam._id }
+        });
+
+        await Exam.findByIdAndDelete(examId);
+
+        res.status(200).json({ message: 'Exam deleted successfully.' });
     } catch (err) {
-        res.status(500).json({ error: 'Failed to delete exam' });
+        console.error('Error deleting exam:', err);
+        res.status(500).json({ message: 'Server error while deleting exam.' });
     }
 };
 

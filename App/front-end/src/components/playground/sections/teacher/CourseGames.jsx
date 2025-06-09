@@ -96,11 +96,15 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                                 {result.endedBy === 'tab-switch' && (
                                     <p style={{ color: 'red' }}>⚠️ Ended due to tab switch</p>
                                 )}
+                                {result?.feedback && (
+                                    <p>💬 <strong>Feedback:</strong> {result?.feedback}</p>
+                                )}
                             </div>
                         ))
                     ) : (
                         <p className="empty">You haven’t submitted any exams yet.</p>
                     )}
+
                 </div>
             </section>
         </div>

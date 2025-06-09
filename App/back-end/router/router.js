@@ -60,12 +60,13 @@ router.delete('/api/admin/delete-exam/:id', authenticateUser, deleteExam);
 router.put('/api/admin/approve-exam/:id', authenticateUser, approveExam);
 router.post('/api/submit-exam', authenticateUser, submitExamResult);
 router.get('api/exam/:examId', authenticateUser, getResultsForTeacher);
-router.put('api/grade/:id', authenticateUser, gradeExamResult);
 router.get('/api/exams/by-course/:courseId', authenticateUser, getExamsByCourseId);
 router.post('/log-exam-violation', authenticateUser, logExamViolation);
 router.get('/api/exam-results/mine/:courseId', authenticateUser, getStudentResultsForCourse);
 router.get('/api/exams/by-course/:courseId/results', authenticateUser, getResultsByCourseId);
 router.get('/api/courses/:id/enrolled-users', authenticateUser, getEnrolledUsers);
 router.get('/api/examResults/:id', authenticateUser, getExamResultById);
+router.put('/api/examResults/grade/:id', authenticateUser, gradeExamResult);
+router.delete('/api/exams/:id', authenticateUser, deleteExam);
 
 module.exports = router;

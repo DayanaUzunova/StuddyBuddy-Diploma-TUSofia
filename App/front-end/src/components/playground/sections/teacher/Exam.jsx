@@ -66,6 +66,17 @@ const Exam = ({ examId, studentId, onFinish }) => {
         setMessage('🚫 You violated the exam rules. Exam ended.');
 
         try {
+            await axiosInstance.post('/api/submit-exam', {
+                examId,
+                studentId,
+                answers,
+                endedDueToViolation: true
+            }, { withCredentials: true });
+        } catch (err) {
+            console.error('Failed to submit exam after violation:', err);
+        }
+
+        try {
             await axiosInstance.post('/api/log-exam-violation', {
                 examId,
                 studentId,
@@ -75,6 +86,7 @@ const Exam = ({ examId, studentId, onFinish }) => {
             console.error('Failed to log violation:', err);
         }
     };
+
 
     const handleChange = (qIndex, value) => {
         setAnswers(prev => ({ ...prev, [qIndex]: value }));

@@ -66,20 +66,22 @@ const getResultsForTeacher = async (req, res) => {
 const gradeExamResult = async (req, res) => {
     try {
         const { id } = req.params;
-        const { score } = req.body;
+        const { score, feedback } = req.body;
 
         const result = await ExamResult.findById(id);
         if (!result) return res.status(404).json({ message: 'Result not found.' });
 
         result.score = score;
-        result.gradedBy = req.user.id;
+        result.feedback = feedback;
         await result.save();
 
-        res.status(200).json({ message: 'Result graded.' });
+        res.status(200).json({ message: 'Grade and comment submitted.' });
     } catch (err) {
-        res.status(500).json({ message: 'Error grading result.' });
+        console.error('Error grading exam:', err);
+        res.status(500).json({ message: 'Server error grading exam.' });
     }
 };
+
 
 const getStudentResultsForCourse = async (req, res) => {
     try {

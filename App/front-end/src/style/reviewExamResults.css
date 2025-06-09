@@ -1,114 +1,126 @@
 .review-exam-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background-color: #f9f9fb;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f9f9fb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.review-exam-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.info-box {
+  background-color: #e8f0fe;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.answers-section {
+  margin-bottom: 2rem;
+}
+
+.answers-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.answer-block {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.answer-block p {
+  margin: 0.3rem 0;
+  line-height: 1.4;
+}
+
+.grade-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1.5rem;
+}
+
+.grade-section label {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.grade-section input {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.grade-section button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.grade-section button:hover {
+  background-color: #45a049;
+}
+
+#feedback-textarea {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .review-exam-container {
+    padding: 1rem;
   }
-  
+
+  .answers-section h3,
   .review-exam-container h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
     text-align: center;
+    font-size: 1.5rem;
   }
-  
-  .info-box {
-    background-color: #e8f0fe;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-  }
-  
-  .answers-section {
-    margin-bottom: 2rem;
-  }
-  
-  .answers-section h3 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .answer-block {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-  }
-  
-  .answer-block p {
-    margin: 0.3rem 0;
-    line-height: 1.4;
-  }
-  
+
   .grade-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.7rem;
-    border-top: 1px solid #ccc;
-    padding-top: 1.5rem;
+    align-items: stretch;
   }
-  
-  .grade-section label {
-    font-weight: bold;
-    font-size: 1rem;
-  }
-  
-  .grade-section input {
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
+
+  .grade-section input,
   .grade-section button {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    width: 100%;
   }
-  
-  .grade-section button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Responsive tweaks */
-  @media (max-width: 600px) {
-    .review-exam-container {
-      padding: 1rem;
-    }
-  
-    .answers-section h3,
-    .review-exam-container h2 {
-      text-align: center;
-      font-size: 1.5rem;
-    }
-  
-    .grade-section {
-      align-items: stretch;
-    }
-  
-    .grade-section input,
-    .grade-section button {
-      width: 100%;
-    }
-  }
-  
-  /* Loading and error styles */
-  .loading,
-  .error {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-top: 2rem;
-  }
-  
+}
+
+/* Loading and error styles */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}

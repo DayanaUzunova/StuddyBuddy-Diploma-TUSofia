@@ -9,13 +9,14 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
     const [title, setTitle] = useState(course.title);
     const [description, setDescription] = useState(course.description);
     const [games, setGames] = useState(course.games || []);
+    const [exams, setExams] = useState([]);
     const [enrolledUsers, setEnrolledUsers] = useState([]);
+    const [examResults, setExamResults] = useState([]);
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [showGameBuilder, setShowGameBuilder] = useState(false);
-    const [showExamBuilder, setShowExamBuilder] = useState(false);
-    const [examResults, setExamResults] = useState([]);
+    const [showGameBuilder, setShowGameBuilder] = useState(false); // false or { game }
+    const [showExamBuilder, setShowExamBuilder] = useState(false); // false or { exam }
     const [selectedResult, setSelectedResult] = useState(null);
 
     const handleUpdateCourse = async () => {
@@ -44,17 +45,49 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
         }
     };
 
+    const handleEditGame = (game) => {
+        setShowGameBuilder({ game });
+    };
+
+    const handleDeleteGame = async (gameId) => {
+        if (!window.confirm('Delete this game?')) return;
+        try {
+            await axiosInstance.delete(`/api/games/${gameId}`, { withCredentials: true });
+            setGames(games.filter((g) => g._id !== gameId));
+        } catch (err) {
+            console.error(err);
+            setError('❌ Failed to delete game.');
+        }
+    };
+
+    const handleEditExam = (exam) => {
+        setShowExamBuilder({ exam });
+    };
+
+    const handleDeleteExam = async (examId) => {
+        if (!window.confirm('Delete this exam?')) return;
+        try {
+            await axiosInstance.delete(`/api/exams/${examId}`, { withCredentials: true });
+            setExams(exams.filter((e) => e._id !== examId));
+        } catch (err) {
+            console.error(err);
+            setError('❌ Failed to delete exam.');
+        }
+    };
+
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const [usersRes, courseRes, examRes] = await Promise.all([
+                const [usersRes, courseRes, examRes, allExamsRes] = await Promise.all([
                     axiosInstance.get(`/api/courses/${course._id}/enrolled-users`, { withCredentials: true }),
                     axiosInstance.get(`/api/courses/${course._id}`, { withCredentials: true }),
                     axiosInstance.get(`/api/exams/by-course/${course._id}/results`, { withCredentials: true }),
+                    axiosInstance.get(`/api/exams/by-course/${course._id}`, { withCredentials: true }),
                 ]);
                 setEnrolledUsers(usersRes.data);
                 setGames(courseRes.data.games || []);
                 setExamResults(examRes.data);
+                setExams(allExamsRes.data);
             } catch (err) {
                 console.error('Error fetching course data:', err);
             }
@@ -80,7 +113,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
     if (showExamBuilder) {
         return (
             <div className="landing">
-                <ExamBuilder courseId={course._id} />
+                <ExamBuilder courseId={course._id} existingExam={showExamBuilder.exam} />
                 <div className="builder-actions">
                     <button className="back-btn same-size-btn" onClick={() => setShowExamBuilder(false)}>⬅️ Back to Course</button>
                 </div>
@@ -91,7 +124,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
     if (showGameBuilder) {
         return (
             <div className="landing">
-                <CardGameBuilder courseId={course._id} onBackToCourse={() => setShowGameBuilder(false)} />
+                <CardGameBuilder courseId={course._id} existingGame={showGameBuilder.game} onBackToCourse={() => setShowGameBuilder(false)} />
                 <div className="builder-actions">
                     <button className="back-btn same-size-btn" onClick={() => setShowGameBuilder(false)}>⬅️ Back to Course</button>
                 </div>
@@ -146,7 +179,30 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
                         <p>No games yet.</p>
                     ) : (
                         <ul className="games-list">
-                            {games.map(game => <li key={game._id}>🕹️ {game.title}</li>)}
+                            {games.map((game) => (
+                                <li key={game._id}>
+                                    🕹️ {game.title}
+                                    <button className="small-btn" onClick={() => handleEditGame(game)}>✏️</button>
+                                    <button className="small-btn danger-btn" onClick={() => handleDeleteGame(game._id)}>🗑️</button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+
+                <div className="course-section">
+                    <h3>📝 Exams</h3>
+                    {exams.length === 0 ? (
+                        <p>No exams yet.</p>
+                    ) : (
+                        <ul className="games-list">
+                            {exams.map((exam) => (
+                                <li key={exam._id}>
+                                    🧪 {exam.title} – {exam.subject}
+                                    <button className="small-btn" onClick={() => handleEditExam(exam)}>✏️</button>
+                                    <button className="small-btn danger-btn" onClick={() => handleDeleteExam(exam._id)}>🗑️</button>
+                                </li>
+                            ))}
                         </ul>
                     )}
                 </div>
@@ -181,7 +237,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
                                             <td>{index + 1}</td>
                                             <td>{result.studentId?.username || 'Unknown'}</td>
                                             <td>{result.examId?.title || 'Untitled'}</td>
-                                            <td>{result.grade ?? 'Not graded'}</td>
+                                            <td>{result.score ?? 'Not graded'}</td>
                                             <td>{result.endedDueToViolation ? '⚠️ Yes' : '✅ No'}</td>
                                             <td>{new Date(result.submittedAt).toLocaleString()}</td>
                                         </tr>
@@ -208,8 +264,8 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
                             <button className="danger-btn same-size-btn" onClick={handleDeleteCourse}>🗑️ Delete</button>
                         </>
                     )}
-                    <button className="primary-btn same-size-btn" onClick={() => setShowGameBuilder(true)}>🕹️ Create Game</button>
-                    <button className="primary-btn same-size-btn" onClick={() => setShowExamBuilder(true)}>📝 Create Exam</button>
+                    <button className="primary-btn same-size-btn" onClick={() => setShowGameBuilder({})}>🕹️ Create Game</button>
+                    <button className="primary-btn same-size-btn" onClick={() => setShowExamBuilder({})}>📝 Create Exam</button>
                     <button className="back-btn same-size-btn" onClick={onBack}>⬅️ Back</button>
                 </div>
             </section>

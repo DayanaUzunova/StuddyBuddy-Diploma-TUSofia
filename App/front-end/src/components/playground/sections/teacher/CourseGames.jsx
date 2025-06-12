@@ -6,7 +6,8 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
     const [exams, setExams] = useState([]);
     const [results, setResults] = useState([]);
 
-    const flashcardGames = course.games?.filter((game) => game?.type === 'card') || [];
+    const flashcardGames = course.games?.filter((game) => game?.type === 'card' && game?.isChallenge !== true) || [];
+
     const challengeGames = course.games?.filter((game) => game?.isChallenge === true) || [];
 
     const handleGameClick = (gameId) => {

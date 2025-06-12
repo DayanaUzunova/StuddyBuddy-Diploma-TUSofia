@@ -7,6 +7,10 @@ const shuffleAnswers = (correct, wrongs) => {
     return allAnswers.sort(() => Math.random() - 0.5);
 };
 
+const getTimePerQuestion = (game) => {
+    return game?.timePerQuestion != null ? game.timePerQuestion : null;
+};
+
 const CardGame = ({ setActiveSection, gameId, setGameId }) => {
     const [game, setGame] = useState(null);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -14,7 +18,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(15);
+    const [timeLeft, setTimeLeft] = useState(null);
     const [timeExpired, setTimeExpired] = useState(false);
     const timerRef = useRef(null);
 
@@ -23,11 +27,9 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
             try {
                 const res = await axiosInstance.get(`/api/game/${gameId}`, { withCredentials: true });
                 setGame(res.data);
-                setAnswers(shuffleAnswers(
-                    res.data.cards[0].correctAnswer,
-                    res.data.cards[0].wrongAnswers
-                ));
-                setTimeLeft(15);
+                const firstCard = res.data.cards[0];
+                setAnswers(shuffleAnswers(firstCard.correctAnswer, firstCard.wrongAnswers));
+                setTimeLeft(getTimePerQuestion(res.data));
             } catch (err) {
                 console.error('Failed to load game', err);
             }
@@ -36,39 +38,44 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
     }, [gameId]);
 
     useEffect(() => {
-        if (!selectedAnswer && !showResult) {
+        clearInterval(timerRef.current);
+        const timePerQuestion = getTimePerQuestion(game);
+
+        if (!selectedAnswer && !showResult && timePerQuestion != null) {
+            setTimeLeft(timePerQuestion);
+
             timerRef.current = setInterval(() => {
-                setTimeLeft(prev => {
+                setTimeLeft((prev) => {
                     if (prev <= 1) {
                         clearInterval(timerRef.current);
                         setTimeExpired(true);
-                        handleAnswerTimeout(); // Auto next
+                        handleAnswerTimeout();
                         return 0;
                     }
                     return prev - 1;
                 });
             }, 1000);
+        } else {
+            setTimeLeft(null); // Infinite time
         }
 
         return () => clearInterval(timerRef.current);
-    }, [currentCardIndex, selectedAnswer]);
+    }, [currentCardIndex, selectedAnswer, game]);
 
     const handleAnswerTimeout = () => {
         setTimeout(() => {
             const nextIndex = currentCardIndex + 1;
             if (nextIndex < game.cards.length) {
+                const nextCard = game.cards[nextIndex];
                 setCurrentCardIndex(nextIndex);
-                setAnswers(shuffleAnswers(
-                    game.cards[nextIndex].correctAnswer,
-                    game.cards[nextIndex].wrongAnswers
-                ));
+                setAnswers(shuffleAnswers(nextCard.correctAnswer, nextCard.wrongAnswers));
                 setSelectedAnswer(null);
-                setTimeLeft(15);
+                setTimeLeft(getTimePerQuestion(game));
                 setTimeExpired(false);
             } else {
                 setShowResult(true);
             }
-        }, 1200); // Small pause before showing next
+        }, 1200);
     };
 
     const handleAnswerClick = (answer) => {
@@ -76,19 +83,17 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
         setSelectedAnswer(answer);
 
         if (answer === game.cards[currentCardIndex].correctAnswer) {
-            setScore(prev => prev + 1);
+            setScore((prev) => prev + 1);
         }
 
         setTimeout(() => {
             const nextIndex = currentCardIndex + 1;
             if (nextIndex < game.cards.length) {
+                const nextCard = game.cards[nextIndex];
                 setCurrentCardIndex(nextIndex);
-                setAnswers(shuffleAnswers(
-                    game.cards[nextIndex].correctAnswer,
-                    game.cards[nextIndex].wrongAnswers
-                ));
+                setAnswers(shuffleAnswers(nextCard.correctAnswer, nextCard.wrongAnswers));
                 setSelectedAnswer(null);
-                setTimeLeft(15);
+                setTimeLeft(getTimePerQuestion(game));
                 setTimeExpired(false);
             } else {
                 setShowResult(true);
@@ -100,12 +105,10 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
         setCurrentCardIndex(0);
         setScore(0);
         setSelectedAnswer(null);
-        setAnswers(shuffleAnswers(
-            game.cards[0].correctAnswer,
-            game.cards[0].wrongAnswers
-        ));
+        const firstCard = game.cards[0];
+        setAnswers(shuffleAnswers(firstCard.correctAnswer, firstCard.wrongAnswers));
         setShowResult(false);
-        setTimeLeft(15);
+        setTimeLeft(getTimePerQuestion(game));
         setTimeExpired(false);
     };
 
@@ -119,7 +122,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
                 <h2>🎉 Game Complete!</h2>
                 <p>Your Score: <strong>{score}</strong> / {game.cards.length}</p>
                 <button className="primary-btn" onClick={handlePlayAgain}>🔁 Play Again</button>
-                <button className="secondary-btn" onClick={() => setActiveSection('Games')}>🏠 Back to Games</button>
+                <button className="secondary-btn" onClick={() => setActiveSection('Courses')}>🏠 Back to Games</button>
             </div>
         );
     }
@@ -131,9 +134,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
             <h2>{game.title}</h2>
             <p className="card-question">{currentCard.question}</p>
 
-            <div className="timer">
-                ⏳ Time Left: {timeLeft} sec
-            </div>
+            {timeLeft !== null && <div className="timer">⏳ Time Left: {timeLeft} sec</div>}
 
             <div className="answers-grid">
                 {answers.map((answer, idx) => {

@@ -62,6 +62,16 @@ const GamesModeration = () => {
             });
     };
 
+    const handleDelete = (gameId) => {
+        axiosInstance.delete(`/api/admin/delete-game/${gameId}`, { withCredentials: true })
+            .then(res => {
+                setGames(games.filter(game => game._id !== gameId));
+            })
+            .catch(err => {
+                console.error("Error deleting game:", err);
+            });
+    };
+
     return (
         <div className="users-moderation">
             <h2 className="section-title">🎮 Game Management</h2>
@@ -95,7 +105,13 @@ const GamesModeration = () => {
                                                 ✅ Approve
                                             </button>
                                         )}
-                                        <button className="action-btn delete">🗑️ Delete</button>
+                                        <button
+                                            className="action-btn delete"
+                                            onClick={() => handleDelete(g._id)}
+                                        >
+                                            🗑️ Delete
+                                        </button>
+
                                     </td>
                                 </tr>
                             ))}

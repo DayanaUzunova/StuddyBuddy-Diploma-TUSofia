@@ -13,8 +13,11 @@ import GamesModeration from './sections/admin/GamesModeration';
 import Conversations from './sections/general/Conversations';
 import StudentCourses from './sections/student/StudentCourses';
 import ExamsModeration from './sections/admin/ExamsModeration';
-import CourseGames from './sections/teacher/CourseGames'
+import CourseGames from './sections/teacher/CourseGames';
 import Exam from './sections/teacher/Exam';
+
+// **Import the new StudentProfile component**
+import StudentProfile from './sections/student/StudentProfile';
 
 const Playground = ({ setFooterVisibility }) => {
     const [activeSection, setActiveSection] = useState('Profile');
@@ -78,7 +81,8 @@ const Playground = ({ setFooterVisibility }) => {
                 {activeSection === 'Profile' && (
                     user.role === 'teacher' ? <TeacherProfile setActiveSection={setActiveSection} />
                         : user.role === 'admin' ? <AdminProfile setActiveSection={setActiveSection} />
-                            : <div>Student profile coming soon!</div>
+                            // <-- Render your StudentProfile here for students:
+                            : <StudentProfile />
                 )}
 
                 {activeSection === 'Games' && (
@@ -101,7 +105,6 @@ const Playground = ({ setFooterVisibility }) => {
                             setActiveSection('Courses');
                         }}
                     />
-
                 )}
 
                 {user.role === 'admin' && activeSection === 'Users Moderation' && (
@@ -135,8 +138,6 @@ const Playground = ({ setFooterVisibility }) => {
                         }}
                     />
                 )}
-
-
             </main>
         </div>
     );

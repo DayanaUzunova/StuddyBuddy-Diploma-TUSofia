@@ -4,19 +4,21 @@ import axiosInstance from '../../../../api/api';
 
 const subjectOptions = ['Math', 'Science', 'History', 'Language', 'Geography'];
 
-const ExamBuilder = ({ courseId, onBackToCourse }) => {
-  const [title, setTitle] = useState('');
-  const [subject, setSubject] = useState('');
-  const [questions, setQuestions] = useState([
-    {
-      questionText: '',
-      type: 'multiple',
-      answers: [
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false }
-      ]
-    }
-  ]);
+const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
+  const [title, setTitle] = useState(existingExam?.title || '');
+  const [subject, setSubject] = useState(existingExam?.subject || '');
+  const [questions, setQuestions] = useState(
+    existingExam?.questions?.length > 0 ? existingExam.questions : [
+      {
+        questionText: '',
+        type: 'multiple',
+        answers: [
+          { text: '', isCorrect: false },
+          { text: '', isCorrect: false }
+        ]
+      }
+    ]
+  );
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -81,49 +83,27 @@ const ExamBuilder = ({ courseId, onBackToCourse }) => {
     }
 
     if (!courseId) {
-      return setFormError('❗ Missing course ID. Please go back and try again.');
-    }
-
-    for (let i = 0; i < questions.length; i++) {
-      const q = questions[i];
-      if (!q.questionText.trim()) {
-        return setFormError(`❗ Question ${i + 1} must have text.`);
-      }
-
-      if (!q.type || (q.type !== 'multiple' && q.type !== 'open')) {
-        return setFormError(`❗ Question ${i + 1} has invalid type.`);
-      }
-
-      if (q.type === 'multiple') {
-        if (!q.answers || q.answers.length < 2) {
-          return setFormError(`❗ Question ${i + 1} must have at least 2 answers.`);
-        }
-
-        for (let a of q.answers) {
-          if (!a.text.trim()) {
-            return setFormError(`❗ All answers in Question ${i + 1} must have text.`);
-          }
-        }
-      }
+      return setFormError('❗ Missing course ID.');
     }
 
     try {
-      await axiosInstance.post(
-        '/api/create-exam',
-        {
-          title,
-          subject,
-          courseId,
-          questions
-        },
-        { withCredentials: true }
-      );
+      const examData = {
+        title,
+        subject,
+        questions,
+        courseId,
+      };
 
-      setSuccessMessage('✅ Exam created successfully!');
-      setTimeout(onBackToCourse, 1500);
+      if (existingExam && existingExam._id) {
+        await axiosInstance.put(`/api/exams/edit/${existingExam._id}`, examData, { withCredentials: true });
+        setSuccessMessage('✅ Exam updated!');
+      } else {
+        await axiosInstance.post('/api/exams', examData, { withCredentials: true });
+        setSuccessMessage('✅ Exam created!');
+      }
     } catch (err) {
       console.error(err);
-      setFormError('❌ Failed to create exam.');
+      setFormError('❌ Failed to submit exam.');
     }
   };
 

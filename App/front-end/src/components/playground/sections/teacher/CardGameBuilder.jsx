@@ -6,6 +6,9 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subject, setSubject] = useState('');
+  const [timePerQuestion, setTimePerQuestion] = useState(15);
+  const [hasTimer, setHasTimer] = useState(true);
+  const [isChallenge, setIsChallenge] = useState(false);
   const [cards, setCards] = useState([
     { question: '', correctAnswer: '', wrongAnswers: ['', ''] }
   ]);
@@ -44,6 +47,10 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
       if (!subject.trim()) return setFormError('❗ Please select a subject.');
       if (cards.length < 2) return setFormError('❗ Please add at least 2 flashcards.');
 
+      if (hasTimer && (!timePerQuestion || timePerQuestion < 5)) {
+        return setFormError('❗ Time per question must be at least 5 seconds.');
+      }
+
       for (let i = 0; i < cards.length; i++) {
         const { question, correctAnswer, wrongAnswers } = cards[i];
         if (!question.trim() || !correctAnswer.trim() || wrongAnswers.some(w => !w.trim())) {
@@ -63,7 +70,9 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
         description,
         cards: formattedCards,
         type: 'card',
-        courseId
+        courseId,
+        timePerQuestion: hasTimer ? parseInt(timePerQuestion) : null,
+        isChallenge
       };
 
       await axiosInstance.post('/api/create-game', gameData, { withCredentials: true });
@@ -72,7 +81,7 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
       setFormError('');
 
       setTimeout(() => {
-        onBackToCourse(); // 👈 go back to course view
+        onBackToCourse();
       }, 1500);
     } catch (error) {
       console.error('Error creating game:', error);
@@ -87,6 +96,7 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
       <div className="builder-section">
         <label>🎮 Game Title</label>
         <input type="text" value={title} placeholder="e.g. French Vocabulary" onChange={(e) => setTitle(e.target.value)} />
+
         <label>🗂️ Subject</label>
         <select className="dropdown" value={subject} onChange={(e) => setSubject(e.target.value)}>
           <option value="">Select a subject</option>
@@ -94,6 +104,7 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
             <option key={subj} value={subj}>{subj}</option>
           ))}
         </select>
+
         <label>📝 Description</label>
         <textarea
           className="description-textarea"
@@ -101,6 +112,38 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        <div className="checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              checked={hasTimer}
+              onChange={(e) => setHasTimer(e.target.checked)}
+            />
+            ⏱️ Enable Timer Per Question
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={isChallenge}
+              onChange={(e) => setIsChallenge(e.target.checked)}
+            />
+            🏆 Mark as Challenge
+          </label>
+        </div>
+
+        {hasTimer && (
+          <>
+            <label>⏲️ Time per Question (seconds)</label>
+            <input
+              type="number"
+              min="5"
+              value={timePerQuestion}
+              onChange={(e) => setTimePerQuestion(e.target.value)}
+              placeholder="e.g. 15"
+            />
+          </>
+        )}
       </div>
 
       <div className="builder-section">

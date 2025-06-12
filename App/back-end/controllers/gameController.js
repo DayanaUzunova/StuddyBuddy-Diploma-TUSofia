@@ -4,7 +4,7 @@ const Game = require('../models/Game');
 
 const createGame = async (req, res) => {
     try {
-        const { title, subject, type, description, cards, courseId } = req.body;
+        const { title, subject, type, description, cards, courseId, timePerQuestion, isChallenge } = req.body;
         const userId = req.user?.id;
 
         if (!title || !subject || !type || !cards || !Array.isArray(cards) || !userId || !courseId) {
@@ -27,8 +27,11 @@ const createGame = async (req, res) => {
             description,
             cards,
             createdBy: userId,
-            isApproved: false
+            isApproved: false,
+            timePerQuestion: timePerQuestion || null,
+            isChallenge: !!isChallenge
         });
+
 
         const savedGame = await newGame.save();
 

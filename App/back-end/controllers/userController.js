@@ -16,10 +16,6 @@ const registerUser = async (req, res) => {
       throw new Error('Invalid params in register user!');
     }
 
-    if (role === 'admin') {
-      throw new Error('Cannot register an admin!');
-    }
-
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailPattern.test(email)) {
@@ -43,10 +39,10 @@ const registerUser = async (req, res) => {
   } catch (error) {
     if (error.code === 11000 && error.keyPattern?.email) {
       return res.status(400).json({ message: 'Email is already taken' });
-    }
+    };
 
     res.status(400).json({ error: error.message });
-  }
+  };
 };
 
 

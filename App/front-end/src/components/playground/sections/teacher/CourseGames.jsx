@@ -7,6 +7,7 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
     const [results, setResults] = useState([]);
 
     const flashcardGames = course.games?.filter((game) => game?.type === 'card') || [];
+    const challengeGames = course.games?.filter((game) => game?.isChallenge === true) || [];
 
     const handleGameClick = (gameId) => {
         setGameId(gameId);
@@ -62,6 +63,27 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
             </section>
 
             <section className="game-section">
+                <h2>🎯 Challenge Games</h2>
+                <div className="game-grid">
+                    {challengeGames.length > 0 ? (
+                        challengeGames.map((game) => (
+                            <div
+                                key={game._id}
+                                className="game-card"
+                                onClick={() => handleGameClick(game._id)}
+                            >
+                                <h3>{game.title}</h3>
+                                <p>🏆 {game.subject}</p>
+                                <p className="desc">{game.description || 'No description provided.'}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="empty">No challenge games for this course.</p>
+                    )}
+                </div>
+            </section>
+
+            <section className="game-section">
                 <h2>📝 Exams</h2>
                 <div className="game-grid">
                     {exams.length > 0 ? (
@@ -82,7 +104,6 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                 </div>
             </section>
 
-            {/* Student's Submissions */}
             <section className="game-section">
                 <h2>📊 Your Submissions</h2>
                 <div className="game-grid">
@@ -104,7 +125,6 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                     ) : (
                         <p className="empty">You haven’t submitted any exams yet.</p>
                     )}
-
                 </div>
             </section>
         </div>

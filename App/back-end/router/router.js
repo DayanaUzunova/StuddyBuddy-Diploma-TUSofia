@@ -34,6 +34,7 @@ router.get('/api/admin/get-users', authenticateUser, getAllUsers) // get all use
 router.get('/api/admin/get-games', authenticateUser, getAllGames); // get games admin
 router.put('/api/admin/update-user/:id', authenticateUser, updateUser);
 router.delete('/api/admin/delete-user/:id', authenticateUser, deleteUser);
+router.delete('/api/admin/delete-game/:id', authenticateUser, deleteCardGame);
 router.put('/api/admin/approve-game/:id', authenticateUser, approveGame);// Create a conversation
 router.post('/api/create-conversation', authenticateUser, createConversation);
 router.delete('/api/delete-conversation/:id', authenticateUser, deleteConversation);
@@ -68,5 +69,6 @@ router.get('/api/courses/:id/enrolled-users', authenticateUser, getEnrolledUsers
 router.get('/api/examResults/:id', authenticateUser, getExamResultById);
 router.put('/api/examResults/grade/:id', authenticateUser, gradeExamResult);
 router.delete('/api/exams/:id', authenticateUser, deleteExam);
+router.put('/api/exams/edit/:id', authenticateUser, editExam);
 
 module.exports = router;

@@ -75,25 +75,27 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
         }
     };
 
+    const fetchCourseData = async () => {
+        try {
+            const [usersRes, courseRes, examRes, allExamsRes] = await Promise.all([
+                axiosInstance.get(`/api/courses/${course._id}/enrolled-users`, { withCredentials: true }),
+                axiosInstance.get(`/api/courses/${course._id}`, { withCredentials: true }),
+                axiosInstance.get(`/api/exams/by-course/${course._id}/results`, { withCredentials: true }),
+                axiosInstance.get(`/api/exams/by-course/${course._id}`, { withCredentials: true }),
+            ]);
+            setEnrolledUsers(usersRes.data);
+            setGames(courseRes.data.games || []);
+            setExamResults(examRes.data);
+            setExams(allExamsRes.data);
+        } catch (err) {
+            console.error('Error fetching course data:', err);
+        }
+    };
+
     useEffect(() => {
-        const fetchAll = async () => {
-            try {
-                const [usersRes, courseRes, examRes, allExamsRes] = await Promise.all([
-                    axiosInstance.get(`/api/courses/${course._id}/enrolled-users`, { withCredentials: true }),
-                    axiosInstance.get(`/api/courses/${course._id}`, { withCredentials: true }),
-                    axiosInstance.get(`/api/exams/by-course/${course._id}/results`, { withCredentials: true }),
-                    axiosInstance.get(`/api/exams/by-course/${course._id}`, { withCredentials: true }),
-                ]);
-                setEnrolledUsers(usersRes.data);
-                setGames(courseRes.data.games || []);
-                setExamResults(examRes.data);
-                setExams(allExamsRes.data);
-            } catch (err) {
-                console.error('Error fetching course data:', err);
-            }
-        };
-        fetchAll();
+        fetchCourseData();
     }, [course._id]);
+
 
     if (selectedResult) {
         return (
@@ -110,12 +112,27 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
         );
     }
 
+    const handleBackToCourse = () => {
+        setShowGameBuilder(false);
+      };
+
+
     if (showExamBuilder) {
         return (
             <div className="landing">
-                <ExamBuilder courseId={course._id} existingExam={showExamBuilder.exam} />
+                <ExamBuilder
+                    courseId={course._id}
+                    existingExam={showExamBuilder.exam}
+                    onBackToCourse={() => {
+                        setShowExamBuilder(false);
+                        fetchCourseData(); // 👈 Fetch updated data
+                    }}
+                />
                 <div className="builder-actions">
-                    <button className="back-btn same-size-btn" onClick={() => setShowExamBuilder(false)}>⬅️ Back to Course</button>
+                    <button className="back-btn same-size-btn" onClick={() => {
+                        setShowExamBuilder(false);
+                        fetchCourseData();
+                    }}>⬅️ Back to Course</button>
                 </div>
             </div>
         );
@@ -123,14 +140,13 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
 
     if (showGameBuilder) {
         return (
-            <div className="landing">
-                <CardGameBuilder courseId={course._id} existingGame={showGameBuilder.game} onBackToCourse={() => setShowGameBuilder(false)} />
-                <div className="builder-actions">
-                    <button className="back-btn same-size-btn" onClick={() => setShowGameBuilder(false)}>⬅️ Back to Course</button>
-                </div>
-            </div>
+            <CardGameBuilder
+                courseId={course._id}
+                onBackToCourse={handleBackToCourse}
+            />
         );
     }
+
 
     return (
         <div className="landing">

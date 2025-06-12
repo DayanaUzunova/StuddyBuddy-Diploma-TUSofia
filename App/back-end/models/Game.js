@@ -41,7 +41,18 @@ const gameSchema = new mongoose.Schema({
     required: true
   },
   createdAt: { type: Date, default: Date.now },
-  isApproved: { type: Boolean, default: false }
+  isApproved: { type: Boolean, default: false },
+  timePerQuestion: {
+    type: Number,
+    default: 15,
+    min: 5,
+    max: 120
+  },
+  isChallenge: {
+    type: Boolean,
+    default: false
+  },
+
 });
 
 module.exports = mongoose.model('Game', gameSchema);

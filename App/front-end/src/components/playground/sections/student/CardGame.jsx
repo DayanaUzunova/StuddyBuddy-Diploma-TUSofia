@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
 import '../../../../style/cardGame.css';
 import axiosInstance from '../../../../api/api';
 
@@ -15,6 +14,9 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(0);
     const [showResult, setShowResult] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(15);
+    const [timeExpired, setTimeExpired] = useState(false);
+    const timerRef = useRef(null);
 
     useEffect(() => {
         const fetchGame = async () => {
@@ -25,6 +27,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
                     res.data.cards[0].correctAnswer,
                     res.data.cards[0].wrongAnswers
                 ));
+                setTimeLeft(15);
             } catch (err) {
                 console.error('Failed to load game', err);
             }
@@ -32,7 +35,44 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
         fetchGame();
     }, [gameId]);
 
+    useEffect(() => {
+        if (!selectedAnswer && !showResult) {
+            timerRef.current = setInterval(() => {
+                setTimeLeft(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timerRef.current);
+                        setTimeExpired(true);
+                        handleAnswerTimeout(); // Auto next
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+
+        return () => clearInterval(timerRef.current);
+    }, [currentCardIndex, selectedAnswer]);
+
+    const handleAnswerTimeout = () => {
+        setTimeout(() => {
+            const nextIndex = currentCardIndex + 1;
+            if (nextIndex < game.cards.length) {
+                setCurrentCardIndex(nextIndex);
+                setAnswers(shuffleAnswers(
+                    game.cards[nextIndex].correctAnswer,
+                    game.cards[nextIndex].wrongAnswers
+                ));
+                setSelectedAnswer(null);
+                setTimeLeft(15);
+                setTimeExpired(false);
+            } else {
+                setShowResult(true);
+            }
+        }, 1200); // Small pause before showing next
+    };
+
     const handleAnswerClick = (answer) => {
+        clearInterval(timerRef.current);
         setSelectedAnswer(answer);
 
         if (answer === game.cards[currentCardIndex].correctAnswer) {
@@ -48,6 +88,8 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
                     game.cards[nextIndex].wrongAnswers
                 ));
                 setSelectedAnswer(null);
+                setTimeLeft(15);
+                setTimeExpired(false);
             } else {
                 setShowResult(true);
             }
@@ -63,6 +105,8 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
             game.cards[0].wrongAnswers
         ));
         setShowResult(false);
+        setTimeLeft(15);
+        setTimeExpired(false);
     };
 
     if (!game) {
@@ -87,13 +131,17 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
             <h2>{game.title}</h2>
             <p className="card-question">{currentCard.question}</p>
 
+            <div className="timer">
+                ⏳ Time Left: {timeLeft} sec
+            </div>
+
             <div className="answers-grid">
                 {answers.map((answer, idx) => {
                     const isCorrect = answer === currentCard.correctAnswer;
                     const isSelected = answer === selectedAnswer;
 
                     let btnClass = 'answer-btn';
-                    if (selectedAnswer) {
+                    if (selectedAnswer || timeExpired) {
                         if (isCorrect) btnClass += ' correct';
                         else if (isSelected) btnClass += ' wrong';
                         else btnClass += ' disabled';
@@ -103,7 +151,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
                         <button
                             key={idx}
                             className={btnClass}
-                            disabled={!!selectedAnswer}
+                            disabled={!!selectedAnswer || timeExpired}
                             onClick={() => handleAnswerClick(answer)}
                         >
                             {answer}
@@ -111,6 +159,15 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
                     );
                 })}
             </div>
+
+            {timeExpired && (
+                <div className="timeout-section">
+                    <p className="timeout-msg">⏰ Time’s up!</p>
+                    <button className="secondary-btn" onClick={() => setActiveSection('Games')}>
+                        🏠 Back to Games
+                    </button>
+                </div>
+            )}
 
             <div className="progress">
                 Question {currentCardIndex + 1} / {game.cards.length}

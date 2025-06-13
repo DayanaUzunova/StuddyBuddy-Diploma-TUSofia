@@ -3,28 +3,21 @@ import '../../style/landing.css'
 import { useAuth } from '../../context/AuthContext';
 import { useSelector } from 'react-redux';
 import { lang } from '../../lang/lang';
+import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
-
     const language = useSelector(state => state.general.language);
     const { user } = useAuth();
-    
-    useEffect(() => { 
-        console.log(language);
-        
-    }, [language])
+
+    const navigate = useNavigate();
 
     return (
         <div className="landing">
             <section className="hero container">
-                <div className="hero-content">
+                <div className="hero-content" style={{ marginTop: '20px' }}>
                     <h1>{lang(language, 'your_pers_learning_companion')}</h1>
                     <p>{lang(language, 'organize_and_study')}</p>
-                    <div className="cta-buttons">
-                        <button className="primary-btn">
-                            {!user ? 'Sign Up for Free 📝' : lang(language, 'view_profile')}
-                        </button>
-                    </div>
+
                 </div>
             </section>
 
@@ -40,7 +33,7 @@ export default function LandingPage() {
 
             <section className="final-cta container">
                 <h2>Ready to improve your study game?</h2>
-                <button className="primary-btn">{!user ? "Join Now" : 'Jump to the Playground! 🕹️'}</button>
+                <button className="primary-btn"  onClick={() => navigate('/playground')}>{!user ? "Join Now" : 'Jump to the Playground! 🕹️'}</button>
             </section>
         </div>
 

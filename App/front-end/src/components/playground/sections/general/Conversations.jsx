@@ -89,25 +89,28 @@ const Conversations = () => {
             <h1>💬 Student Conversations</h1>
             <p>Start discussions, ask questions, and share ideas with your classmates.</p>
 
-            <section className="conversations-section">
-                <h2>Start a New Thread ✍️</h2>
-                <form className="new-thread-form" onSubmit={handleNewThread}>
-                    <input
-                        type="text"
-                        placeholder="🎯 Thread Title"
-                        value={newTitle}
-                        onChange={(e) => setNewTitle(e.target.value)}
-                    />
-                    <textarea
-                        placeholder="📝 Description"
-                        value={newDescription}
-                        onChange={(e) => setNewDescription(e.target.value)}
-                        rows={4}
-                        style={{ resize: 'none' }}
-                    />
-                    <button type="submit" className="primary-btn">Post Thread ➕</button>
-                </form>
-            </section>
+            {user?.role === 'teacher' && (
+                <section className="conversations-section">
+                    <h2>Start a New Thread ✍️</h2>
+                    <form className="new-thread-form" onSubmit={handleNewThread}>
+                        <input
+                            type="text"
+                            placeholder="🎯 Thread Title"
+                            value={newTitle}
+                            onChange={(e) => setNewTitle(e.target.value)}
+                        />
+                        <textarea
+                            placeholder="📝 Description"
+                            value={newDescription}
+                            onChange={(e) => setNewDescription(e.target.value)}
+                            rows={4}
+                            style={{ resize: 'none' }}
+                        />
+                        <button type="submit" className="primary-btn">Post Thread ➕</button>
+                    </form>
+                </section>
+            )}
+
 
             <h2 className="sticky-thread-title">🧵 Recent Threads</h2>
 

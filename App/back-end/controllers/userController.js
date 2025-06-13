@@ -25,17 +25,6 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ username, email, password: hashedPassword, role });
     await user.save();
-
-    const jwt = generateToken(user?.id, username, email, role);
-
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      role: user.role,
-      token: jwt
-    });
   } catch (error) {
     if (error.code === 11000 && error.keyPattern?.email) {
       return res.status(400).json({ message: 'Email is already taken' });

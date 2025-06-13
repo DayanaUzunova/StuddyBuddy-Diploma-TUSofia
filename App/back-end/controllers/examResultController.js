@@ -9,22 +9,50 @@ const submitExamResult = async (req, res) => {
         const exam = await Exam.findById(examId);
         if (!exam) return res.status(404).json({ message: 'Exam not found.' });
 
+        let score = 0;
+
+        exam.questions.forEach((question, index) => {
+            const submittedAnswer = answers[index];
+            const points = question.points || 1;
+
+            if (question.type === 'multiple') {
+                const correctAnswers = question.answers
+                    .filter(a => a.isCorrect)
+                    .map(a => a.text)
+                    .sort();
+
+                const submitted = Array.isArray(submittedAnswer)
+                    ? [...submittedAnswer].sort()
+                    : [];
+
+                const isCorrect =
+                    submitted.length === correctAnswers.length &&
+                    submitted.every((ans, i) => ans === correctAnswers[i]);
+
+                if (isCorrect) score += points;
+            }
+        });
+
         const newResult = new ExamResult({
             examId,
             studentId,
             answers,
             endedDueToViolation,
+            score,
             submittedAt: new Date()
         });
 
         await newResult.save();
-        res.status(201).json({ message: 'Result submitted successfully.' });
+
+        res.status(201).json({
+            message: 'Result submitted successfully.',
+            score
+        });
     } catch (err) {
         console.error('Submit error:', err);
         res.status(500).json({ message: err.message || 'Server error during submission.' });
     }
 };
-
 
 const logExamViolation = async (req, res) => {
     try {
@@ -139,16 +167,18 @@ const getExamResultById = async (req, res) => {
             : result.answers || {};
 
         const formattedAnswers = [];
-
         const examQuestions = result.examId.questions || [];
 
         examQuestions.forEach((question, index) => {
-            const answer = userAnswers[index];
+            const answer = userAnswers[index]; // Can be array or string
+
             formattedAnswers.push({
                 questionText: question.questionText,
-                answerText: Array.isArray(answer)
-                    ? answer.join(', ')
-                    : answer || 'No answer',
+                type: question.type,
+                points: question.points || 1,
+                correctAnswers: question.answers?.filter(a => a.isCorrect).map(a => a.text) || [],
+                allAnswers: question.answers || [], // All choices for multiple
+                studentAnswer: answer,
             });
         });
 
@@ -172,6 +202,7 @@ const getExamResultById = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch exam result.' });
     }
 };
+
 
 
 

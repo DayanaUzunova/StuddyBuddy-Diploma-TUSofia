@@ -8,16 +8,19 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
   const [title, setTitle] = useState(existingExam?.title || '');
   const [subject, setSubject] = useState(existingExam?.subject || '');
   const [questions, setQuestions] = useState(
-    existingExam?.questions?.length > 0 ? existingExam.questions : [
-      {
-        questionText: '',
-        type: 'multiple',
-        answers: [
-          { text: '', isCorrect: false },
-          { text: '', isCorrect: false }
+    existingExam?.questions?.length > 0
+      ? existingExam.questions
+      : [
+          {
+            questionText: '',
+            type: 'multiple',
+            points: 1,
+            answers: [
+              { text: '', isCorrect: false },
+              { text: '', isCorrect: false }
+            ]
+          }
         ]
-      }
-    ]
   );
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -48,12 +51,19 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
     setQuestions(updated);
   };
 
+  const deleteAnswer = (qIndex, aIndex) => {
+    const updated = [...questions];
+    updated[qIndex].answers.splice(aIndex, 1);
+    setQuestions(updated);
+  };
+
   const addQuestion = () => {
     setQuestions([
       ...questions,
       {
         questionText: '',
         type: 'multiple',
+        points: 1,
         answers: [
           { text: '', isCorrect: false },
           { text: '', isCorrect: false }
@@ -98,7 +108,7 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
         await axiosInstance.put(`/api/exams/edit/${existingExam._id}`, examData, { withCredentials: true });
         setSuccessMessage('✅ Exam updated!');
       } else {
-        await axiosInstance.post('/api/exams', examData, { withCredentials: true });
+        await axiosInstance.post('/api/create-exam', examData, { withCredentials: true });
         setSuccessMessage('✅ Exam created!');
       }
     } catch (err) {
@@ -106,6 +116,8 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
       setFormError('❌ Failed to submit exam.');
     }
   };
+
+  const totalPoints = questions.reduce((sum, q) => sum + (parseInt(q.points) || 0), 0);
 
   return (
     <div className="exam-builder container">
@@ -144,6 +156,15 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
               onChange={(e) => handleQuestionChange(qIndex, 'questionText', e.target.value)}
             />
 
+            <label>🏅 Points</label>
+            <input
+              type="number"
+              min="0"
+              value={q.points || ''}
+              onChange={(e) => handleQuestionChange(qIndex, 'points', parseInt(e.target.value) || 1)}
+              className="points-input"
+            />
+
             <label>🧩 Type</label>
             <select value={q.type} onChange={(e) => handleQuestionChange(qIndex, 'type', e.target.value)} className="dropdown">
               <option value="multiple">🗳️ Multiple Choice</option>
@@ -168,6 +189,7 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
                       />
                       <span>✅ Correct</span>
                     </label>
+                    <button className="delete-btn small" onClick={() => deleteAnswer(qIndex, aIndex)}>🗑️</button>
                   </div>
                 ))}
                 <button className="add-btn" onClick={() => addAnswer(qIndex)}>➕ Add Answer</button>
@@ -181,11 +203,16 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
         <button className="add-btn" onClick={addQuestion}>➕ Add Question</button>
       </div>
 
+      <p className="total-points">🎯 Total Points: <strong>{totalPoints}</strong></p>
+
       {formError && <p className="form-error">{formError}</p>}
       {successMessage && <p className="form-success">{successMessage}</p>}
 
       <div className="builder-actions">
         <button className="primary-btn" onClick={handleSubmit}>💾 Save Exam</button>
+        {onBackToCourse && (
+          <button className="back-btn" onClick={onBackToCourse}>⬅️ Back</button>
+        )}
       </div>
     </div>
   );

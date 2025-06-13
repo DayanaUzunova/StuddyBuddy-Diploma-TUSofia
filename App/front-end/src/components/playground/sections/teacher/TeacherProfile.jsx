@@ -114,7 +114,7 @@ const TeacherProfile = ({ setActiveSection }) => {
       </section>
 
       <div className="tab-buttons">
-        {['My Courses', 'Privacy'].map((tab) => (
+        {['My Courses'].map((tab) => (
           <button
             key={tab}
             className={`tab-button ${activeTab === tab ? 'active' : ''}`}
@@ -160,37 +160,6 @@ const TeacherProfile = ({ setActiveSection }) => {
                 Create New Course 📚
               </button>
             </div>
-          </>
-        )}
-
-        {activeTab === 'Privacy' && (
-          <>
-            <h2>Change Password</h2>
-            <form onSubmit={handlePasswordChange} className="password-form">
-              <input
-                type="password"
-                placeholder="Current Password"
-                value={passwordData.currentPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                required
-              />
-              <input
-                type="password"
-                placeholder="New Password"
-                value={passwordData.newPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Confirm New Password"
-                value={passwordData.confirmPassword}
-                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                required
-              />
-              <button type="submit" className="primary-btn">Update Password</button>
-              {passwordMsg && <p>{passwordMsg}</p>}
-            </form>
           </>
         )}
       </section>

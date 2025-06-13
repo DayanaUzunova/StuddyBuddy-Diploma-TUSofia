@@ -8,8 +8,10 @@ const answerSchema = new mongoose.Schema({
 const questionSchema = new mongoose.Schema({
     questionText: { type: String, required: true },
     type: { type: String, enum: ['multiple', 'open'], required: true },
-    answers: [answerSchema] // само за multiple-type
+    answers: [answerSchema], // only for 'multiple' type
+    points: { type: Number, default: 1, min: 0 } // ✅ added points field
 });
+
 
 const examSchema = new mongoose.Schema({
     title: { type: String, required: true },

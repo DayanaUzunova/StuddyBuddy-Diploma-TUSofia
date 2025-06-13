@@ -95,6 +95,13 @@
   border: 1px solid #80ffb3;
 }
 
+.course-form select {
+  padding: 8px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;

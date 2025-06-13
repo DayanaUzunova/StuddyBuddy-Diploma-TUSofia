@@ -25,20 +25,14 @@ export default function Register() {
         return;
       }
 
-      const response = await axiosInstance.post("http://localhost:3001/api/users/register", {
+      await axiosInstance.post("http://localhost:3001/api/users/register", {
         username,
         email,
         password,
         role
       });
 
-      if (!response?.data) {
-        throw new Error('Invalid response data from server!');
-      }
-
-      const jwt = response.data.token;
-      setUser(jwt);
-
+      console.log("Registration successful", response.data);
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || err.message || "Registration failed!";

@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../../api/api';
 import '../../../../style/coursesControl.css';
 
+const SUBJECTS = [
+    "Math", "Science", "History", "Geography",
+    "Language", "Art", "Music", "Technology", 'Other'
+];
+
 const CoursesControl = ({ onCancel, onCreated }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [subject, setSubject] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -18,7 +24,7 @@ const CoursesControl = ({ onCancel, onCreated }) => {
         try {
             const res = await axiosInstance.post(
                 '/api/courses/create',
-                { title, description },
+                { title, description, subject },
                 { withCredentials: true }
             );
 
@@ -26,6 +32,7 @@ const CoursesControl = ({ onCancel, onCreated }) => {
                 setSuccessMsg('✅ Course created successfully! 🎉');
                 setTitle('');
                 setDescription('');
+                setSubject('');
                 onCreated?.();
             } else {
                 throw new Error('Unexpected response');
@@ -45,7 +52,7 @@ const CoursesControl = ({ onCancel, onCreated }) => {
         }
     }, [successMsg]);
 
-    const isFormValid = title.trim() && description.trim();
+    const isFormValid = title.trim() && description.trim() && subject;
 
     return (
         <div className="landing">
@@ -79,6 +86,19 @@ const CoursesControl = ({ onCancel, onCreated }) => {
                             required
                             style={{ resize: 'none' }}
                         />
+
+                        <label htmlFor="subject-select">📚 Subject</label>
+                        <select
+                            id="subject-select"
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                            required
+                        >
+                            <option value="">-- Select a subject --</option>
+                            {SUBJECTS.map((subj) => (
+                                <option key={subj} value={subj}>{subj}</option>
+                            ))}
+                        </select>
 
                         {errorMsg && <div className="toast toast-error">{errorMsg}</div>}
                         {successMsg && <div className="toast toast-success">{successMsg}</div>}

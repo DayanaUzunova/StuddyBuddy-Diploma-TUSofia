@@ -2,7 +2,7 @@ const Course = require('../models/Course');
 
 const createCourse = async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, description, subject } = req.body;
         const userId = req.user?.id;
 
         if (!title || !description || !userId) {
@@ -11,6 +11,7 @@ const createCourse = async (req, res) => {
 
         const newCourse = new Course({
             title,
+            subject,
             description,
             createdBy: userId,
             games: [],

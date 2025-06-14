@@ -69,7 +69,7 @@ const editCourse = async (req, res) => {
         const { id } = req.params;
         const { title, description, games } = req.body;
 
-        if (!title || !description || !Array.isArray(games)) {
+        if (!title || !description) {
             return res.status(400).json({ message: 'Missing or invalid course data.' });
         }
 

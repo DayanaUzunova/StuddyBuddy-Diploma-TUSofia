@@ -35,6 +35,7 @@ router.get('/api/admin/get-games', authenticateUser, getAllGames); // get games 
 router.put('/api/admin/update-user/:id', authenticateUser, updateUser);
 router.delete('/api/admin/delete-user/:id', authenticateUser, deleteUser);
 router.delete('/api/admin/delete-game/:id', authenticateUser, deleteCardGame);
+router.delete('/api/games/:id', authenticateUser, deleteCardGame);
 router.put('/api/admin/approve-game/:id', authenticateUser, approveGame);// Create a conversation
 router.post('/api/create-conversation', authenticateUser, createConversation);
 router.delete('/api/delete-conversation/:id', authenticateUser, deleteConversation);

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../../style/cardGameBuilder.css';
 import axiosInstance from '../../../../api/api';
 
-const CardGameBuilder = ({ courseId, onBackToCourse }) => {
+const CardGameBuilder = ({ courseId, game, onBackToCourse }) => {
+  const isEditing = !!game;
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [subject, setSubject] = useState('');
   const [timePerQuestion, setTimePerQuestion] = useState(15);
   const [hasTimer, setHasTimer] = useState(true);
   const [isChallenge, setIsChallenge] = useState(false);
-  const [cards, setCards] = useState([
-    { question: '', correctAnswer: '', wrongAnswers: ['', ''] }
-  ]);
+  const [cards, setCards] = useState([{ question: '', correctAnswer: '', wrongAnswers: ['', ''] }]);
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -19,6 +19,18 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
     'Math', 'Science', 'History', 'Geography',
     'Language', 'Art', 'Music', 'Technology'
   ];
+
+  useEffect(() => {
+    if (isEditing && game) {
+      setTitle(game.title || '');
+      setDescription(game.description || '');
+      setSubject(game.subject || '');
+      setTimePerQuestion(game.timePerQuestion || 15);
+      setHasTimer(!!game.timePerQuestion);
+      setIsChallenge(game.isChallenge || false);
+      setCards(game.cards || [{ question: '', correctAnswer: '', wrongAnswers: ['', ''] }]);
+    }
+  }, [game]);
 
   const handleCardChange = (index, field, value, wrongIndex = null) => {
     const updatedCards = [...cards];
@@ -75,23 +87,28 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
         isChallenge
       };
 
-      await axiosInstance.post('/api/create-game', gameData, { withCredentials: true });
+      if (isEditing) {
+        await axiosInstance.post(`/api/games/edit/${game._id}`, gameData, { withCredentials: true });
+        setSuccessMessage('✅ Game updated!');
+      } else {
+        await axiosInstance.post('/api/create-game', gameData, { withCredentials: true });
+        setSuccessMessage('✅ Game created and linked to course!');
+      }
 
-      setSuccessMessage('✅ Game created and linked to course!');
       setFormError('');
 
       setTimeout(() => {
-        onBackToCourse();
+        onBackToCourse?.();
       }, 1500);
     } catch (error) {
-      console.error('Error creating game:', error);
+      console.error('Error saving game:', error);
       setFormError('❗ Failed to save the game. Please try again later.');
     }
   };
 
   return (
     <div className="card-game-builder container">
-      <h1>🃏 Create a Flashcard Game</h1>
+      <h1>{isEditing ? '✏️ Edit Flashcard Game' : '🃏 Create a Flashcard Game'}</h1>
 
       <div className="builder-section">
         <label>🎮 Game Title</label>
@@ -167,8 +184,14 @@ const CardGameBuilder = ({ courseId, onBackToCourse }) => {
       {successMessage && <div className="form-success">{successMessage}</div>}
 
       <div className="builder-actions">
-        <button className="primary-btn" onClick={handleSubmit}>💾 Save Game</button>
+        <button className="primary-btn" onClick={handleSubmit}>
+          {isEditing ? '💾 Update Game' : '💾 Save Game'}
+        </button>
       </div>
+
+      {onBackToCourse && (
+        <button className="back-btn" onClick={onBackToCourse}>⬅️ Back</button>
+      )}
     </div>
   );
 };

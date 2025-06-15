@@ -184,6 +184,21 @@ const getEnrolledUsers = async (req, res) => {
     }
 };
 
+const getEnrolledCoursesbyStudnet = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const courses = await Course.find({ enrolledUsers: userId })
+            .populate('games')
+            .populate('exams');
+
+        res.json(courses);
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error);
+        res.status(500).json({ error: 'Server error fetching enrolled courses' });
+    }
+}
+
 module.exports = {
     createCourse,
     getMyCourses,
@@ -192,5 +207,6 @@ module.exports = {
     getAllCourses,
     getCourseById,
     enrollInCourse,
-    getEnrolledUsers
+    getEnrolledUsers,
+    getEnrolledCoursesbyStudnet
 };

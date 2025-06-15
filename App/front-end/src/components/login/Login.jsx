@@ -27,7 +27,6 @@ export default function Login() {
       };
 
       setUser(response.data);
-      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed!');
     }
@@ -35,7 +34,8 @@ export default function Login() {
 
   const { values, changeHandler, submitHandler } = useForm(
     initialValues,
-    loginHandler
+    loginHandler,
+    true
   );
 
   return (

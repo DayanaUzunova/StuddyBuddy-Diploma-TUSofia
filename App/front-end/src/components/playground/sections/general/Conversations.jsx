@@ -74,11 +74,16 @@ const Conversations = () => {
         fetchConversations();
     }, []);
 
+    const onBackFromConversation = () => {
+        setSelectedThreadId(null);
+        fetchConversations();
+    };
+
     if (selectedThreadId) {
         return (
             <Conversation
                 threadId={selectedThreadId}
-                onBack={() => setSelectedThreadId(null)}
+                onBack={onBackFromConversation}
                 username={selectedThreadUsername}
             />
         );

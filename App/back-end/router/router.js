@@ -4,8 +4,8 @@ const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyReset
 const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
-const { createConversation, deleteConversation, closeConversation, getConversations, addComment } = require('../controllers/conversationsController');
-const { createCourse, getMyCourses, getAllCourses, getCourseById, editCourse, deleteCourse, enrollInCourse, getEnrolledUsers } = require('../controllers/courseController');
+const { createConversation, deleteConversation, closeConversation, getConversations, addComment, getConversation } = require('../controllers/conversationsController');
+const { createCourse, getMyCourses, getAllCourses, getCourseById, editCourse, deleteCourse, enrollInCourse, getEnrolledUsers, getEnrolledCoursesbyStudnet } = require('../controllers/courseController');
 const {
     createExam,
     getMyExams,
@@ -42,7 +42,7 @@ router.delete('/api/delete-conversation/:id', authenticateUser, deleteConversati
 router.patch('/api/close-conversation/:id', authenticateUser, closeConversation);
 router.get('/api/conversations', authenticateUser, getConversations);
 router.post('/api/conversations/:id/comment', authenticateUser, addComment);
-router.get('/api/conversations/:id', authenticateUser, getConversations);
+router.get('/api/conversations/:id', authenticateUser, getConversation);
 router.post('/api/users/forgot-password', sendResetCode);
 router.post('/api/users/verify-code', verifyResetCode);
 router.post('/api/users/reset-password', resetPassword);
@@ -71,5 +71,6 @@ router.get('/api/examResults/:id', authenticateUser, getExamResultById);
 router.put('/api/examResults/grade/:id', authenticateUser, gradeExamResult);
 router.delete('/api/exams/:id', authenticateUser, deleteExam);
 router.put('/api/exams/edit/:id', authenticateUser, editExam);
+router.get('/api/courses/my/student', authenticateUser, getEnrolledCoursesbyStudnet)
 
 module.exports = router;

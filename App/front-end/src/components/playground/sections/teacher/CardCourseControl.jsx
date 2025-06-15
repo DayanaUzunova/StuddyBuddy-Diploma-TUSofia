@@ -15,7 +15,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [showGameBuilder, setShowGameBuilder] = useState(false); // false or { game }
+    const [showGameBuilder, setShowGameBuilder] = useState(false);
     const [showExamBuilder, setShowExamBuilder] = useState(false); // false or { exam }
     const [selectedResult, setSelectedResult] = useState(null);
 
@@ -114,7 +114,8 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
 
     const handleBackToCourse = () => {
         setShowGameBuilder(false);
-      };
+        fetchCourseData()
+    };
 
 
     if (showExamBuilder) {
@@ -142,6 +143,7 @@ const CardCourseControl = ({ course, onBack, onUpdate }) => {
         return (
             <CardGameBuilder
                 courseId={course._id}
+                game={showGameBuilder.game} // Pass game if editing
                 onBackToCourse={handleBackToCourse}
             />
         );

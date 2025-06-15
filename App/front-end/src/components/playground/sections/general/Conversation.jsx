@@ -12,7 +12,10 @@ const Conversation = ({ threadId, onBack, username }) => {
         try {
             setLoading(true);
             const res = await axiosInstance.get(`/api/conversations/${threadId}`, { withCredentials: true });
-            setThread(res.data[0]);
+
+            // ✅ Expecting single object not array
+            console.log('Fetched thread:', res.data);
+            setThread(res.data); // Not res.data[0]
         } catch (err) {
             console.error('Error fetching thread:', err);
         } finally {
@@ -20,9 +23,16 @@ const Conversation = ({ threadId, onBack, username }) => {
         }
     };
 
+    useEffect(() => {
+        setThread(null);
+        setNewComment('');
+        fetchThread();
+    }, [threadId]);
+
     const handleSubmitComment = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) return;
+
         try {
             setSubmitting(true);
             await axiosInstance.post(
@@ -39,10 +49,6 @@ const Conversation = ({ threadId, onBack, username }) => {
         }
     };
 
-    useEffect(() => {
-        fetchThread();
-    }, [threadId]);
-
     if (loading || !thread) {
         return <div className="conversation container">🔄 Loading conversation...</div>;
     }
@@ -55,9 +61,7 @@ const Conversation = ({ threadId, onBack, username }) => {
             <p className="thread-description">📝 {thread.description}</p>
             <p className="thread-meta">👤 By: {username || 'Unknown'}</p>
 
-            {thread.isClosed && (
-                <div className="thread-status">🚫 This conversation is closed</div>
-            )}
+            {thread.isClosed && <div className="thread-status">🚫 This conversation is closed</div>}
 
             <section className="comments-section">
                 <h2>💬 Comments</h2>

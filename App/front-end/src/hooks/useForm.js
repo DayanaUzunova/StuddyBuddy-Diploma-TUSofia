@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-export const useForm = (initialValues, onSubmit) => {
+export const useForm = (initialValues, onSubmit, isLogin) => {
     const [values, setValues] = useState(initialValues);
 
     const navigate = useNavigate();
@@ -13,7 +13,10 @@ export const useForm = (initialValues, onSubmit) => {
     const submitHandler = (event) => {
         event.preventDefault();
         onSubmit(values);
-        navigate('/')
+
+        if (!isLogin) {
+            navigate('/')
+        }
     };
 
     return { values, changeHandler, submitHandler };

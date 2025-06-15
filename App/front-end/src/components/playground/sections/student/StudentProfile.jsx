@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../../context/AuthContext';
 import axiosInstance from '../../../../api/api';
+import CardCourseControl from '../teacher/CardCourseControl';
+import CourseGames from '../teacher/CourseGames';
+import Exam from '../teacher/Exam';
 
 const StudentProfile = () => {
   const { user } = useAuth();
@@ -8,12 +11,18 @@ const StudentProfile = () => {
   const [activeTab, setActiveTab] = useState('Enrolled Courses');
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
+  const [gameId, setGameId] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [examId, setExamId] = useState(null);
+  const [activeSection, setActiveSection] = useState('');
+
 
   const fetchEnrolledCourses = async () => {
-    setLoadingCourses(true);
     try {
-      const res = await axiosInstance.get('/api/courses/enrolled', { withCredentials: true });
+      setLoadingCourses(true);
+      const res = await axiosInstance.get('/api/courses/my/student', {
+        withCredentials: true,
+      });
       setEnrolledCourses(res.data);
     } catch (error) {
       console.error('Failed to fetch enrolled courses:', error);
@@ -30,11 +39,14 @@ const StudentProfile = () => {
 
   if (selectedCourse) {
     return (
-      <CourseDetailControl
+      <CourseGames
         course={selectedCourse}
-        onBack={() => {
+        setActiveSection={setActiveSection}
+        setGameId={setGameId}
+        setExamId={setExamId}
+        goBack={() => {
           setSelectedCourse(null);
-          fetchEnrolledCourses();
+          setActiveSection('Courses');
         }}
       />
     );
@@ -93,10 +105,13 @@ const StudentProfile = () => {
 
         {activeTab === 'Profile' && (
           <>
-            <h2>Your Profile</h2>
-            <p><strong>Username:</strong> {user?.username}</p>
-            <p><strong>Email:</strong> {user?.email}</p>
-            {/* Add more profile info or edit form here */}
+            <h2>👤 Your Profile</h2>
+            <p>
+              <strong>🆔 Username:</strong> {user?.username}
+            </p>
+            <p>
+              <strong>📧 Email:</strong> {user?.email}
+            </p>
           </>
         )}
       </section>

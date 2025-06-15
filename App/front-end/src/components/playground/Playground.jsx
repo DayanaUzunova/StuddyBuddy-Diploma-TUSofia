@@ -16,7 +16,6 @@ import ExamsModeration from './sections/admin/ExamsModeration';
 import CourseGames from './sections/teacher/CourseGames';
 import Exam from './sections/teacher/Exam';
 
-// **Import the new StudentProfile component**
 import StudentProfile from './sections/student/StudentProfile';
 
 const Playground = ({ setFooterVisibility }) => {
@@ -31,30 +30,28 @@ const Playground = ({ setFooterVisibility }) => {
         setFooterVisibility(false);
     }, [setFooterVisibility]);
 
-    let sections = [
-        { name: 'Profile', emoji: '🧑' },
-    ];
+    let sections = [];
 
     if (user.role === 'student') {
-        sections = sections.concat([
+        sections = [
+            { name: 'Profile', emoji: '🧑' },
             { name: 'Courses', emoji: '📘' },
             { name: 'Conversations', emoji: '💬' },
             { name: 'Achievements', emoji: '🏆' },
             { name: 'Leaderboards', emoji: '📊' },
-        ]);
-    }
-    else if (user.role === 'admin') {
-        sections = sections.concat([
+        ];
+    } else if (user.role === 'admin') {
+        sections = [
             { name: 'Users Moderation', emoji: '🛡️' },
             { name: 'Games Moderation', emoji: '🎯' },
             { name: 'Exams Moderation', emoji: '📝' },
-        ]);
-    }
-    else if (user.role === 'teacher') {
-        sections = sections.concat([
+        ];
+    } else if (user.role === 'teacher') {
+        sections = [
+            { name: 'Profile', emoji: '🧑' },
             { name: 'Conversations', emoji: '💬' },
-        ]);
-    };
+        ];
+    }
 
     return (
         <div className="playground">
@@ -81,7 +78,6 @@ const Playground = ({ setFooterVisibility }) => {
                 {activeSection === 'Profile' && (
                     user.role === 'teacher' ? <TeacherProfile setActiveSection={setActiveSection} />
                         : user.role === 'admin' ? <AdminProfile setActiveSection={setActiveSection} />
-                            // <-- Render your StudentProfile here for students:
                             : <StudentProfile />
                 )}
 

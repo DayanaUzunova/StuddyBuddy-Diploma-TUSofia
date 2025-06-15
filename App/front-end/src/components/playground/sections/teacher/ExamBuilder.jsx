@@ -11,16 +11,16 @@ const ExamBuilder = ({ courseId, onBackToCourse, existingExam }) => {
     existingExam?.questions?.length > 0
       ? existingExam.questions
       : [
-          {
-            questionText: '',
-            type: 'multiple',
-            points: 1,
-            answers: [
-              { text: '', isCorrect: false },
-              { text: '', isCorrect: false }
-            ]
-          }
-        ]
+        {
+          questionText: '',
+          type: 'multiple',
+          points: 1,
+          answers: [
+            { text: '', isCorrect: false },
+            { text: '', isCorrect: false }
+          ]
+        }
+      ]
   );
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');

@@ -14,13 +14,14 @@ const StudentGames = ({ setActiveSection, setGameId }) => {
                 throw new Error("Cannot find any games at this time!");
             }
 
-            setGames(response?.data);
+            setGames(response?.data.filter(game => game.isApproved));
         } catch (error) {
             console.error('Error fetching games:', error);
         } finally {
             setLoading(false);
         };
     };
+
 
     useEffect(() => {
         fetchGames();

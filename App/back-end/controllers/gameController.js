@@ -67,7 +67,7 @@ const getMyGames = async (req, res) => {
 const editCardGame = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, subject, description, cards } = req.body;
+        const { title, subject, description, cards, timePerQuestion, isChallenge } = req.body;
 
         if (!title || !subject || !cards || !Array.isArray(cards)) {
             return res.status(400).json({ message: 'Missing or invalid game data.' });
@@ -95,6 +95,8 @@ const editCardGame = async (req, res) => {
         updatedGame.subject = subject;
         updatedGame.description = description;
         updatedGame.cards = cards;
+        updatedGame.timePerQuestion = timePerQuestion;
+        updatedGame.isChallenge = !!isChallenge;
 
         const savedGame = await updatedGame.save();
         res.status(200).json(savedGame);
@@ -103,6 +105,7 @@ const editCardGame = async (req, res) => {
         res.status(500).json({ message: 'Failed to update game.' });
     }
 };
+
 
 
 const deleteCardGame = async (req, res) => {

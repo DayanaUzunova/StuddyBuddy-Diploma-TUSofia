@@ -38,7 +38,6 @@ const Playground = ({ setFooterVisibility }) => {
             { name: 'Courses', emoji: '📘' },
             { name: 'Conversations', emoji: '💬' },
             { name: 'Achievements', emoji: '🏆' },
-            { name: 'Leaderboards', emoji: '📊' },
         ];
     } else if (user.role === 'admin') {
         sections = [

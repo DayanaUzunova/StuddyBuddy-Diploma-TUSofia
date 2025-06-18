@@ -9,6 +9,11 @@ const createCourse = async (req, res) => {
             return res.status(400).json({ message: 'Missing required fields.' });
         }
 
+        const existingCourse = await Course.findOne({ title, createdBy: userId });
+        if (existingCourse) {
+            return res.status(409).json({ message: 'Course with this title already exists.' });
+        }
+
         const newCourse = new Course({
             title,
             subject,

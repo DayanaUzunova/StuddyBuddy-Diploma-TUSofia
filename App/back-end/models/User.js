@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   lang: { type: String, default: 'en' },
+  gamesPlayedCount: { type: Number, default: 0 },
   role: { type: String, enum: ["student", "teacher", "admin"], default: "student", required: true },
 }, { timestamps: true });
 

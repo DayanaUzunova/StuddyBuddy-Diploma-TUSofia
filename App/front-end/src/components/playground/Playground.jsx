@@ -17,6 +17,7 @@ import CourseGames from './sections/teacher/CourseGames';
 import Exam from './sections/teacher/Exam';
 
 import StudentProfile from './sections/student/StudentProfile';
+import Achievements from './sections/student/Achievements';
 
 const Playground = ({ setFooterVisibility }) => {
     const [activeSection, setActiveSection] = useState('Profile');
@@ -119,6 +120,10 @@ const Playground = ({ setFooterVisibility }) => {
                     />
                 )}
 
+                {user.role === 'student' && activeSection === 'Achievements' && (
+                    <Achievements />
+                )}
+
                 {user.role === 'admin' && activeSection === 'Exams Moderation' && (
                     <ExamsModeration setActiveSection={setActiveSection} />
                 )}
@@ -134,6 +139,7 @@ const Playground = ({ setFooterVisibility }) => {
                     />
                 )}
             </main>
+
         </div>
     );
 };

@@ -24,22 +24,6 @@ const Exam = ({ examId, studentId, onFinish }) => {
     }, [examId]);
 
     useEffect(() => {
-        const handleVisibilityChange = async () => {
-            if (document.visibilityState === 'hidden') {
-                if (!warned) {
-                    setWarned(true);
-                    alert('⚠️ Switching tabs will end your exam if done again!');
-                } else {
-                    endExamDueToViolation('Tab switch during exam');
-                }
-            }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, [warned]);
-
-    useEffect(() => {
         const handleKeyDown = (e) => {
             const isForbidden =
                 (e.ctrlKey && e.key === 'Tab') ||
@@ -59,6 +43,22 @@ const Exam = ({ examId, studentId, onFinish }) => {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [warned]);
+
+    useEffect(() => {
+        const handleVisibilityChange = async () => {
+            if (document.visibilityState === 'hidden') {
+                if (!warned) {
+                    setWarned(true);
+                    alert('⚠️ Switching tabs will end your exam if done again!');
+                } else {
+                    endExamDueToViolation('Tab switch during exam');
+                }
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
     }, [warned]);
 
     const endExamDueToViolation = async (reason) => {

@@ -186,5 +186,31 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const markGameCompleted = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-module.exports = { registerUser, loginUser, getUser, logoutUser, verifyResetCode, sendResetCode, resetPassword };
+    await User.findByIdAndUpdate(userId, { $inc: { gamesPlayedCount: 1 } });
+
+    res.status(200).json({ message: 'Game marked completed and user count incremented' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to update user game count' });
+  }
+};
+
+const getUserGameCount = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId, 'gamesPlayedCount');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ gamesPlayedCount: user.gamesPlayedCount || 0 });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch games played count' });
+  }
+};
+
+module.exports = { markGameCompleted, getUserGameCount, registerUser, loginUser, getUser, logoutUser, verifyResetCode, sendResetCode, resetPassword };

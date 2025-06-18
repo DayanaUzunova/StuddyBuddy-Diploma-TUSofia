@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyResetCode, resetPassword } = require('../controllers/userController');
+const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyResetCode, resetPassword, markGameCompleted, getUserGameCount } = require('../controllers/userController');
 const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
@@ -71,6 +71,7 @@ router.get('/api/examResults/:id', authenticateUser, getExamResultById);
 router.put('/api/examResults/grade/:id', authenticateUser, gradeExamResult);
 router.delete('/api/exams/:id', authenticateUser, deleteExam);
 router.put('/api/exams/edit/:id', authenticateUser, editExam);
-router.get('/api/courses/my/student', authenticateUser, getEnrolledCoursesbyStudnet)
-
+router.get('/api/courses/my/student', authenticateUser, getEnrolledCoursesbyStudnet);
+router.post('/api/user/increment-games-played', authenticateUser, markGameCompleted)
+router.get('/api/games/completed/count', authenticateUser, getUserGameCount);
 module.exports = router;

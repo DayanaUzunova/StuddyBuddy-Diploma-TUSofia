@@ -51,6 +51,7 @@ const Achievements = () => {
     { title: '🔥 Game On', description: 'Complete 5 games', achieved: completedGames >= 5 },
     { title: '🏅 Pro Player', description: 'Complete 10 games', achieved: completedGames >= 10 },
     { title: '🎯 Game Master', description: 'Complete 25 games', achieved: completedGames >= 25 },
+
   ], [completedGames]);
 
   if (!user) {

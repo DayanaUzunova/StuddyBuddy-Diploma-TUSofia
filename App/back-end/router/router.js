@@ -74,4 +74,5 @@ router.put('/api/exams/edit/:id', authenticateUser, editExam);
 router.get('/api/courses/my/student', authenticateUser, getEnrolledCoursesbyStudnet);
 router.post('/api/user/increment-games-played', authenticateUser, markGameCompleted)
 router.get('/api/games/completed/count', authenticateUser, getUserGameCount);
+
 module.exports = router;

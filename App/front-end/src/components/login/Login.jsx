@@ -14,12 +14,12 @@ export default function Login() {
   const navigate = useNavigate();
 
   const loginHandler = async ({ email, password }) => {
-    if (!email || !password) {
-      setError('Both email and password are required!');
-      return;
-    }
-
     try {
+      if (!email || !password) {
+        setError('Both email and password are required!');
+        return;
+      }
+
       const response = await axiosInstance.post('http://localhost:3001/api/users/login', { email, password }, { withCredentials: true });
 
       if (!response?.data) {

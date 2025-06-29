@@ -62,10 +62,10 @@ const Exam = ({ examId, studentId, onFinish }) => {
     }, [warned]);
 
     const endExamDueToViolation = async (reason) => {
-        setIsBlocked(true);
-        setMessage('🚫 You violated the exam rules. Exam ended.');
-
         try {
+            setIsBlocked(true);
+            setMessage('🚫 You violated the exam rules. Exam ended.');
+
             await axiosInstance.post('/api/submit-exam', {
                 examId,
                 studentId,

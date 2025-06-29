@@ -9,6 +9,8 @@ export function language_en(word) {
         case 'what_you_get':
             return 'What You Get';
         case 'view_profile':
-            return 'View your Profile 👤'
+            return 'View your Profile 👤';
+        case 'playground_title':
+            return 'Playground'
     };
 };

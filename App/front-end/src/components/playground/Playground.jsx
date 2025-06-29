@@ -18,12 +18,16 @@ import Exam from './sections/teacher/Exam';
 
 import StudentProfile from './sections/student/StudentProfile';
 import Achievements from './sections/student/Achievements';
+import { useSelector } from 'react-redux';
+import { lang } from '../../lang/lang';
 
 const Playground = ({ setFooterVisibility }) => {
     const [activeSection, setActiveSection] = useState('Profile');
     const [gameId, setGameId] = useState(null);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [examId, setExamId] = useState(null);
+
+    const language = useSelector(state => state.general.language);
 
     const { user } = useAuth();
 
@@ -56,7 +60,7 @@ const Playground = ({ setFooterVisibility }) => {
     return (
         <div className="playground">
             <aside className="playground-sidebar">
-                <h2>🕹️ Playground</h2>
+                <h2>🕹️ {lang(language, 'playground_title')}</h2>
                 <ul className="sidebar-menu">
                     {sections.map(section => (
                         <li

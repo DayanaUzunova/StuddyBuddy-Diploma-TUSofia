@@ -87,7 +87,6 @@ const StudentProfile = () => {
                   <div
                     key={course._id}
                     className="feature-card course-card"
-                    onClick={() => setSelectedCourse(course)}
                   >
                     <div className="course-card-header">
                       <strong>📚 {course.title}</strong>

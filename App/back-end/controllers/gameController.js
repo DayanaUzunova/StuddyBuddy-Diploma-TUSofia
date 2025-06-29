@@ -35,7 +35,6 @@ const createGame = async (req, res) => {
 
         const savedGame = await newGame.save();
 
-        // 🔗 Link to course
         await Course.findByIdAndUpdate(courseId, {
             $addToSet: { games: savedGame._id }
         });

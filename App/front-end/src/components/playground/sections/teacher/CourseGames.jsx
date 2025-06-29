@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../../../api/api';
 import '../../../../style/studentGames.css';
+import ReviewExamResults from './ReviewExamResults';
+import ReviewExamResultsStudent from '../student/ReviewExamResultsStudent';
 
 const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId }) => {
     const [exams, setExams] = useState([]);
     const [results, setResults] = useState([]);
+    const [selectedResult, setSelectedResult] = useState(null);
 
     const flashcardGames = course.games?.filter(
         (game) => game?.type === 'card' && game?.isChallenge !== true && game?.isApproved
@@ -14,7 +17,6 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
         (game) => game?.isChallenge === true && game?.isApproved
     ) || [];
 
-
     const handleGameClick = (gameId) => {
         setGameId(gameId);
         setActiveSection('CardGame');
@@ -23,6 +25,10 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
     const handleExamClick = (examId) => {
         setExamId(examId);
         setActiveSection('Exam');
+    };
+
+    const handleResultClick = (result) => {
+        setSelectedResult(result);
     };
 
     useEffect(() => {
@@ -38,6 +44,8 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                 .catch((err) => console.error('Error loading exam results:', err));
         }
     }, [course]);
+
+    const approvedExams = exams.filter((exam) => exam.isApproved);
 
     return (
         <div className="student-games container">
@@ -92,8 +100,8 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
             <section className="game-section">
                 <h2>📝 Exams</h2>
                 <div className="game-grid">
-                    {exams.length > 0 ? (
-                        exams.map((exam) => (
+                    {approvedExams.length > 0 ? (
+                        approvedExams.map((exam) => (
                             <div
                                 key={exam._id}
                                 className="game-card"
@@ -105,7 +113,7 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                             </div>
                         ))
                     ) : (
-                        <p className="empty">No exams available for this course.</p>
+                        <p className="empty">No approved exams available for this course.</p>
                     )}
                 </div>
             </section>
@@ -115,12 +123,16 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                 <div className="game-grid">
                     {results.length > 0 ? (
                         results.map((result) => (
-                            <div key={result._id} className="game-card">
+                            <div
+                                key={result._id}
+                                className="game-card"
+                                onClick={() => handleResultClick(result)}
+                            >
                                 <h3>{result.examId?.title || 'Untitled Exam'}</h3>
                                 <p>📚 {result.examId?.subject || 'Unknown subject'}</p>
                                 <p>📅 {new Date(result.submittedAt).toLocaleString()}</p>
                                 <p>🧪 Score: {result.score !== null ? result.score : 'Not graded yet'}</p>
-                                {result.endedBy === 'tab-switch' && (
+                                {result.endedDueToViolation && (
                                     <p style={{ color: 'red' }}>⚠️ Ended due to tab switch</p>
                                 )}
                                 {result?.feedback && (
@@ -133,6 +145,12 @@ const CourseGames = ({ course, setActiveSection, setGameId, goBack, setExamId })
                     )}
                 </div>
             </section>
+
+            {selectedResult && (
+               <>
+                <ReviewExamResultsStudent resultId={selectedResult?._id} />
+               </>
+            )}
         </div>
     );
 };

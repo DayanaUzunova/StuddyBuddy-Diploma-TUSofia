@@ -16,10 +16,6 @@ const ExamResultSchema = new mongoose.Schema({
         of: mongoose.Schema.Types.Mixed,
         required: true
     },
-    score: {
-        type: Number,
-        default: null
-    },
     feedback: {
         type: String,
         default: ''
@@ -33,8 +29,8 @@ const ExamResultSchema = new mongoose.Schema({
         default: false
     },
     score: {
-        type: Number,
-        default: 0
+        type: String,
+        default: 'Not yet rated'
     }
 });
 

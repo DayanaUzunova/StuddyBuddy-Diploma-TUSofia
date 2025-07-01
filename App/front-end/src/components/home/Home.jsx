@@ -24,15 +24,15 @@ export default function LandingPage() {
             <section className="features">
                 <h2>{lang(language, 'what_you_get')}</h2>
                 <div className="feature-grid">
-                    <div className="feature-card">💬 Chat with Students & Teachers</div>
-                    <div className="feature-card">🎮 Play Educational Games</div>
-                    <div className="feature-card">🏆 Level Up & Earn Achievements</div>
-                    <div className="feature-card">📝 Test Your Knowledge by Solving Exams</div>
+                    <div className="feature-card">P{lang(language, 'chat_with_students' )}</div>
+                    <div className="feature-card">{lang(language, 'play_edu_games')}</div>
+                    <div className="feature-card">{lang(language, 'level_up_and_earn')}</div>
+                    <div className="feature-card">{lang(language, 'test_your_know')}</div>
                 </div>
             </section>
 
             <section className="final-cta container">
-                <h2>Ready to improve your study game?</h2>
+                <h2>{lang(language, 'ready_to_play')}</h2>
                 <button className="primary-btn"  onClick={() => navigate('/playground')}>{!user ? "Join Now" : 'Jump to the Playground! 🕹️'}</button>
             </section>
         </div>

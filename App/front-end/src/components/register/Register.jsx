@@ -3,29 +3,37 @@ import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import axiosInstance from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
-import '../../style/register.css'
+import '../../style/register.css';
+import { useSelector } from 'react-redux';
+import { lang } from '../../lang/lang';
 
-const initialValues = { username: '', email: '', password: '', confirmPassword: '', role: '' };
+const initialValues = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  role: ''
+};
 
 export default function Register() {
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const language = useSelector(state => state.general.language);
 
   const registerHandler = async ({ username, email, password, confirmPassword, role }) => {
     try {
       if (!username || !email || !password || !confirmPassword || !role) {
-        setError('All fields are required!');
+        setError(lang(language, 'error_fill_fields'));
         return;
       }
 
       if (password !== confirmPassword) {
-        setError('Passwords do not match!');
+        setError(lang(language, 'error_password_mismatch'));
         return;
       }
 
-      await axiosInstance.post("http://localhost:3001/api/users/register", {
+      const response = await axiosInstance.post("http://localhost:3001/api/users/register", {
         username,
         email,
         password,
@@ -33,65 +41,65 @@ export default function Register() {
       });
 
       console.log("Registration successful", response.data);
+      navigate('/login');
     } catch (err) {
-      const message = err.response?.data?.message || err.message || "Registration failed!";
+      const message = err.response?.data?.message || err.message || lang(language, 'register_failed');
       setError(message);
     }
   };
-
 
   const { values, changeHandler, submitHandler } = useForm(initialValues, registerHandler);
 
   return (
     <section className="register-page">
       <div className="register-container">
-        <h1 className="register-title">📝 Create an Account</h1>
+        <h1 className="register-title">{lang(language, 'register_title')}</h1>
         <form className="register-form" onSubmit={submitHandler}>
-          <label htmlFor="username">👤 Username</label>
+          <label htmlFor="username">{lang(language, 'username_title')}</label>
           <input
             type="text"
             id="username"
             name="username"
             value={values.username}
             onChange={changeHandler}
-            placeholder="Enter your username"
+            placeholder={lang(language, 'enter_username')}
             required
           />
 
-          <label htmlFor="email">📧 Email</label>
+          <label htmlFor="email">{lang(language, 'email_title')}</label>
           <input
             type="email"
             id="email"
             name="email"
             value={values.email}
             onChange={changeHandler}
-            placeholder="Enter your email"
+            placeholder={lang(language, 'enter_email')}
             required
           />
 
-          <label htmlFor="password">🔑 Password</label>
+          <label htmlFor="password">{lang(language, 'password_title')}</label>
           <input
             type="password"
             id="password"
             name="password"
             value={values.password}
             onChange={changeHandler}
-            placeholder="Enter your password"
+            placeholder={lang(language, 'enter_password')}
             required
           />
 
-          <label htmlFor="confirmPassword">🔁 Confirm Password</label>
+          <label htmlFor="confirmPassword">{lang(language, 'confirm_password_title')}</label>
           <input
             type="password"
             id="confirmPassword"
             name="confirmPassword"
             value={values.confirmPassword}
             onChange={changeHandler}
-            placeholder="Confirm your password"
+            placeholder={lang(language, 'confirm_password_placeholder')}
             required
           />
 
-          <label htmlFor="role">🎓 Role</label>
+          <label htmlFor="role">{lang(language, 'role_title')}</label>
           <select
             id="role"
             name="role"
@@ -99,21 +107,21 @@ export default function Register() {
             onChange={changeHandler}
             required
           >
-            <option value="">Select Role</option>
-            <option value="student">👩‍🎓 Student</option>
-            <option value="teacher">👨‍🏫 Teacher</option>
+            <option value="">{lang(language, 'select_role')}</option>
+            <option value="student">{lang(language, 'role_student')}</option>
+            <option value="teacher">{lang(language, 'role_teacher')}</option>
           </select>
 
           {error && <p className="register-error">{error}</p>}
 
-          <button type="submit" className="primary-btn">🚀 Register</button>
+          <button type="submit" className="primary-btn">{lang(language, 'register_button')}</button>
 
           <p className="register-login-link">
-            Already have an account? <a href="/login">🔐 Login here</a>
+            {lang(language, 'already_have_account')}{' '}
+            <a href="/login">{lang(language, 'login_here')}</a>
           </p>
         </form>
       </div>
     </section>
   );
-
 }

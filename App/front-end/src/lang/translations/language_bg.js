@@ -125,7 +125,10 @@ export function language_bg(word) {
             return '📘 Линкедин';
         case 'all_rights_reserved':
             return 'Всички права запазени.';
-
+        case 'join_now':
+            return 'Присъедини се сега';
+        case 'jump_to_playground':
+            return 'Направо към Площадката! 🕹️';
 
         default:
             return word;

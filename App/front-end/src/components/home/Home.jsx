@@ -54,7 +54,9 @@ export default function LandingPage() {
 
             <section className="final-cta container">
                 <h2>{lang(language, 'ready_to_play')}</h2>
-                <button className="primary-btn" onClick={() => navigate('/playground')}>{!user ? "Join Now" : 'Jump to the Playground! 🕹️'}</button>
+                <button className="primary-btn" onClick={() => navigate('/playground')}>
+                    {!user ? lang(language, 'join_now') : lang(language, 'jump_to_playground')}
+                </button>
             </section>
         </div>
 

@@ -126,6 +126,11 @@ export function language_en(word) {
         case 'all_rights_reserved':
             return 'All rights reserved.';
 
+        case 'join_now':
+            return 'Join Now';
+        case 'jump_to_playground':
+            return 'Jump to the Playground! 🕹️';
+
         default:
             return word;
     }

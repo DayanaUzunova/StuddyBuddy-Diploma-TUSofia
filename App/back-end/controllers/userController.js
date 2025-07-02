@@ -233,5 +233,19 @@ const changeLang = async (req, res) => {
   }
 };
 
+const getLang = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-module.exports = { changeLang, markGameCompleted, getUserGameCount, registerUser, loginUser, getUser, logoutUser, verifyResetCode, sendResetCode, resetPassword };
+    const user = await User.findById(userId);
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ lang: user.lang });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to update language' });
+  }
+};
+
+module.exports = { getLang, changeLang, markGameCompleted, getUserGameCount, registerUser, loginUser, getUser, logoutUser, verifyResetCode, sendResetCode, resetPassword };

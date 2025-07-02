@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyResetCode, resetPassword, markGameCompleted, getUserGameCount, changeLang } = require('../controllers/userController');
+const { registerUser, loginUser, getUser, logoutUser, sendResetCode, verifyResetCode, resetPassword, markGameCompleted, getUserGameCount, changeLang, getLang } = require('../controllers/userController');
 const { authenticateUser } = require('../services/userService');
 const { createGame, getMyGames, editCardGame, deleteCardGame, getGames, getCardGame, approveGame } = require('../controllers/gameController');
 const { getAllUsers, getAllGames, updateUser, deleteUser } = require('../controllers/adminController');
@@ -75,5 +75,6 @@ router.get('/api/courses/my/student', authenticateUser, getEnrolledCoursesbyStud
 router.post('/api/user/increment-games-played', authenticateUser, markGameCompleted)
 router.get('/api/games/completed/count', authenticateUser, getUserGameCount);
 router.post('/api/user/change-lang', authenticateUser, changeLang);
+router.get('/api/user/get-lang', authenticateUser, getLang);
 
 module.exports = router;

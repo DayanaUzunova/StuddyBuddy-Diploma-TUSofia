@@ -1,32 +1,40 @@
 import React from 'react';
 import '../../style/footer.css';
+import { useSelector } from 'react-redux';
+import { lang } from '../../lang/lang';
 
 export default function Footer({ visible = true }) {
+
+    const language = useSelector(state => state.general.language);
+
     return (
         <footer className={`footer ${!visible ? 'footer-hidden' : ''}`}>
             <div className="footer-container container">
                 <div className="footer-logo">
                     <h3>StudyBuddy</h3>
-                    <p>Your learning companion, always ready to help.</p>
+                    <p>{lang(language, 'footer_description')}</p>
                 </div>
 
                 <div className="footer-links">
-                    <h4>Explore</h4>
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
-                    <a href="#terms">Terms</a>
+                    <h4>{lang(language, 'explore')}</h4>
+                    <a href="#features">{lang(language, 'features')}</a>
+                    <a href="#about">{lang(language, 'about')}</a>
+                    <a href="#contact">{lang(language, 'contact')}</a>
+                    <a href="#terms">{lang(language, 'terms')}</a>
                 </div>
 
                 <div className="footer-social">
-                    <h4>Follow Us</h4>
-                    <a href="#" aria-label="Twitter">🐦 Twitter</a>
-                    <a href="#" aria-label="Instagram">📸 Instagram</a>
-                    <a href="#" aria-label="Facebook">📘 LinkedIn</a>
+                    <h4>{lang(language, 'follow_us')}</h4>
+                    <a href="#" aria-label="Twitter">{lang(language, 'twitter')}</a>
+                    <a href="#" aria-label="Instagram">{lang(language, 'instagram')}</a>
+                    <a href="#" aria-label="Facebook">{lang(language, 'facebook')}</a>
                 </div>
             </div>
+
             <div className="footer-bottom">
-                <p>&copy; {new Date().getFullYear()} Dayana Uzunova. All rights reserved.</p>
+                <p>
+                    &copy; {new Date().getFullYear()} Dayana Uzunova. {lang(language, 'all_rights_reserved')}
+                </p>
             </div>
         </footer>
     );

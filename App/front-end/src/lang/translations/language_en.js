@@ -103,6 +103,29 @@ export function language_en(word) {
         case 'username':
             return 'Username';
 
+        case 'footer_description':
+            return 'Your learning companion, always ready to help.';
+        case 'explore':
+            return 'Explore';
+        case 'features':
+            return 'Features';
+        case 'about':
+            return 'About';
+        case 'contact':
+            return 'Contact';
+        case 'terms':
+            return 'Terms';
+        case 'follow_us':
+            return 'Follow Us';
+        case 'twitter':
+            return '🐦 Twitter';
+        case 'instagram':
+            return '📸 Instagram';
+        case 'facebook':
+            return '📘 LinkedIn';
+        case 'all_rights_reserved':
+            return 'All rights reserved.';
+
         default:
             return word;
     }

@@ -159,7 +159,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
         <h2>🎉 Game Complete!</h2>
         <p>Your Score: <strong>{score}</strong> / {game.cards.length}</p>
         <button className="primary-btn" onClick={handlePlayAgain}>🔁 Play Again</button>
-        <button className="secondary-btn" onClick={() => setActiveSection('Courses')}>🏠 Back to Games</button>
+        <button className="secondary-btn" onClick={() => setActiveSection('CourseGames')}>🏠 Back to Games</button>
       </div>
     );
   }
@@ -201,7 +201,7 @@ const CardGame = ({ setActiveSection, gameId, setGameId }) => {
       {timeExpired && (
         <div className="timeout-section">
           <p className="timeout-msg">⏰ Time’s up!</p>
-          <button className="secondary-btn" onClick={() => setActiveSection('Games')}>
+          <button className="secondary-btn" onClick={() => setActiveSection('CourseGames')}>
             🏠 Back to Games
           </button>
         </div>

@@ -23,11 +23,7 @@ export default function LandingPage() {
                 throw new Error('Error getting lang!');
             };
 
-            console.log(res.data);
-            
-
             dispatch(setLanguage(res?.data?.lang));
-
         } catch (err) {
             console.log(err);
         }
@@ -49,7 +45,7 @@ export default function LandingPage() {
             <section className="features">
                 <h2>{lang(language, 'what_you_get')}</h2>
                 <div className="feature-grid">
-                    <div className="feature-card">{lang(language, 'chat_with_students')}</div>
+                    <div className="feature-card">{lang(language, 'chat_with_student')}</div>
                     <div className="feature-card">{lang(language, 'play_edu_games')}</div>
                     <div className="feature-card">{lang(language, 'level_up_and_earn')}</div>
                     <div className="feature-card">{lang(language, 'test_your_know')}</div>

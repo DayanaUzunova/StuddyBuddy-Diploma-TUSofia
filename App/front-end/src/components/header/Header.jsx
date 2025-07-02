@@ -2,14 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import '../../style/header.css';
 import flagUs from '../../../assets/icons/usFlag.png'
-import { useState } from 'react';
+import flagBg from '../../../assets/icons/bulgariaFlag.png'
+import { useEffect, useState } from 'react';
 import LangModal from '../modals/LangModal';
+import { useSelector } from 'react-redux';
 
 export default function Header() {
   const { user, removeToken } = useAuth();
   const navigate = useNavigate();
 
   const [langModalOpen, setLangModalOpen] = useState(false);
+
+  const language = useSelector(state => state.general.language);
 
   const handleLanguageSelect = (lang) => {
     console.log('Selected language:', lang);
@@ -19,6 +23,11 @@ export default function Header() {
   const handleLogout = async () => {
     await removeToken();
     navigate('/')
+  };
+
+  const flags = {
+    bg: flagBg,
+    en: flagUs
   };
 
   return (
@@ -38,7 +47,7 @@ export default function Header() {
             </div>
           )}
           <div className='language_picker'>
-            <img className='lang_btn' src={flagUs} onClick={() => setLangModalOpen(true)} />
+            <img className='lang_btn' src={flags[language]} onClick={() => setLangModalOpen(true)} />
           </div>
         </nav>
       </div>
